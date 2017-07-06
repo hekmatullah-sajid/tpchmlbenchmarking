@@ -1,3 +1,1 @@
-# tpchmlbenchmarking
-
-## Big data analytics project
+# tpchbenchmarking
