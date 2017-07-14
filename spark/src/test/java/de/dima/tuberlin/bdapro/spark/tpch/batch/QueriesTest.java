@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tuberlin.dima.bdapro.spark.tpch.Utils;
-import de.tuberlin.dima.bdapro.spark.tpch.Utils.Nation;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.TableSourceProvider;
 
 
@@ -351,19 +349,19 @@ public class QueriesTest {
 //		fail("Query18 failed");
 //	}
 //	
-//	@Test
-//	public void Query19() {
-//		final Query19 q19 = new Query19(spark);
-//		final List<Row> result = q19.execute("Brand#12", "Brand#23", "Brand#34", 1, 10, 20);
-//
-//		for (final Row elem : result) {
-//			if (Utils.convertToTwoDecimal(elem.getDouble(0)) == 3083843.06) {
-//				assertEquals(0, 0);
-//				return;
-//			}
-//		}
-//		fail("Query19 failed");
-//	}
+	@Test
+	public void Query19() {
+		final Query19 q19 = new Query19(spark);
+		final List<Row> result = q19.execute("Brand#12", "Brand#23", "Brand#34", 1, 10, 20);
+
+		for (final Row elem : result) {
+			if (Utils.convertToTwoDecimal(elem.getDouble(0)) == 3083843.06) {
+				assertEquals(0, 0);
+				return;
+			}
+		}
+		fail("Query19 failed");
+	}
 //	
 //	@Test
 //	public void Query20() {
@@ -404,8 +402,8 @@ public class QueriesTest {
 //
 //        for (final Row elem : result) {
 //            if (elem.getString(0).equals("13") &&
-//                    elem.getLong(1) == (long) 888 &&
-//                    Utils.convertToTwoDecimal(elem.getDouble(2)) == 6737713.99) {
+//                    elem.getLong(1) == (long) 891 &&
+//                    Utils.convertToTwoDecimal(elem.getDouble(2)) == 6752701.57) {
 //                assertEquals(0, 0);
 //                return;
 //            }

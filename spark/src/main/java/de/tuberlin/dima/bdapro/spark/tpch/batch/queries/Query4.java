@@ -1,13 +1,11 @@
 package de.tuberlin.dima.bdapro.spark.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
 
 /**
  * Created by seema on 06/06/2017.

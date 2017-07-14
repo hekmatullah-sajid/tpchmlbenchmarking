@@ -1,6 +1,10 @@
 package de.tuberlin.dima.bdapro.flink.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Random;
+
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -8,10 +12,7 @@ import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Random;
+import de.tuberlin.dima.bdapro.flink.tpch.Utils;
 
 /**
  * Created by seema on 30/05/2017.
@@ -23,9 +24,7 @@ public class Query3 extends Query{
 
     @Override
     public List<Tuple4<Integer, Double, String, Integer>> execute() {
-        final long serialVersionUID = 1L;
-	    String segment =  Utils.getRandomSegment();
-	    LocalDate date = getRandomDate();
+        String segment =  Utils.getRandomSegment();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return execute(segment, getRandomDate(), dateTimeFormatter);
     }

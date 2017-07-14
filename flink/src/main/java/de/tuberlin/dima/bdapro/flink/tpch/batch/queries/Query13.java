@@ -1,14 +1,14 @@
 package de.tuberlin.dima.bdapro.flink.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
-import org.apache.flink.api.common.functions.MapFunction;
+import java.util.List;
+
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
-import java.util.List;
+import de.tuberlin.dima.bdapro.flink.tpch.Utils;
 
 /**
  * Created by seema on 05/06/2017.

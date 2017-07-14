@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.spark.sql.SparkSession;
 
+import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query1;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query10;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query11;
@@ -15,20 +16,21 @@ import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query12;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query13;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query14;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query15;
+import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query16;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query17;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query18;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query19;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query2;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query20;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query21;
+import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query22;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query3;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query4;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query5;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query6;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query7;
-import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query9;
-import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query8;
+import de.tuberlin.dima.bdapro.spark.tpch.batch.queries.Query9;
 
 public class BenchmarkingJob {
 
@@ -164,11 +166,11 @@ public class BenchmarkingJob {
 		end = System.currentTimeMillis();
 		results.add(" Query15|" + (end - start) + "\r\n");
 		
-//				start = System.currentTimeMillis();
-//				final Query q16 = new Query16(spark);
-//				q16.execute();
-//				end = System.currentTimeMillis();
-//				results.add(" Query16|" + (end - start) + "\r\n");
+		start = System.currentTimeMillis();
+		final Query q16 = new Query16(spark);
+		q16.execute();
+		end = System.currentTimeMillis();
+		results.add(" Query16|" + (end - start) + "\r\n");
 		
 		start = System.currentTimeMillis();
 		final Query q17 = new Query17(spark);
@@ -200,11 +202,11 @@ public class BenchmarkingJob {
 		end = System.currentTimeMillis();
 		results.add(" Query21|" + (end - start) + "\r\n");
 		
-//		start = System.currentTimeMillis();
-//		final Query q22 = new Query22(spark);
-//		q22.execute();
-//		end = System.currentTimeMillis();
-//		results.add(" Query22|" + (end - start) + "\r\n");
+		start = System.currentTimeMillis();
+		final Query q22 = new Query22(spark);
+		q22.execute();
+		end = System.currentTimeMillis();
+		results.add(" Query22|" + (end - start) + "\r\n");
 
 		////////////////////////WRITE OUTPUT TO FILE ///////////////////////////////
 		

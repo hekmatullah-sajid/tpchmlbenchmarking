@@ -1,13 +1,14 @@
 package de.tuberlin.dima.bdapro.spark.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+
+import de.tuberlin.dima.bdapro.spark.tpch.Utils;
 
 /**
  * Created by seema on 06/06/2017.
@@ -21,7 +22,6 @@ public class Query3 extends Query{
     @Override
     public List<Row> execute() {
         String segment =  Utils.getRandomSegment();
-        LocalDate date = getRandomDate();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return execute(segment, getRandomDate(), dateTimeFormatter);
     }

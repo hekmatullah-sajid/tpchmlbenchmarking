@@ -1,18 +1,16 @@
 package de.tuberlin.dima.bdapro.flink.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple1;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Random;
+import de.tuberlin.dima.bdapro.flink.tpch.Utils;
 
 /**
  * Created by seema on 05/06/2017.
@@ -58,7 +56,6 @@ public class Query14 extends Query {
     }
     private LocalDate getRandomDate()
     {
-        Random rand = new Random();
         return LocalDate.of(Utils.getRandomInt(1992,1997), Utils.getRandomInt(1,12), 1);
     }
 }

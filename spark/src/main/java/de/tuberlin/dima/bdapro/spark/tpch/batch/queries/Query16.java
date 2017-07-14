@@ -1,11 +1,12 @@
 package de.tuberlin.dima.bdapro.spark.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.tuberlin.dima.bdapro.spark.tpch.Utils;
 
 /**
  * Created by seema on 07/06/2017.

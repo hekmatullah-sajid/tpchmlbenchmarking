@@ -1,6 +1,10 @@
 package de.tuberlin.dima.bdapro.flink.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -8,10 +12,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import de.tuberlin.dima.bdapro.flink.tpch.Utils;
 
 /**
  * Created by seema on 06/06/2017.
@@ -29,15 +30,15 @@ public class Query22 extends Query {
     public List<Tuple3<String, Long, Double>> execute(List<Integer> countryCodes) {
 
         String SQLQuery = "SELECT cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal "
-                + "FROM ( SELECT substring(c_phone from 1 for 2) as cntrycode, c_acctbal "
+                + "FROM ( SELECT substring(c_phone, 1, 2) as cntrycode, c_acctbal "
                 + "FROM customer "
-                + "WHERE substring(c_phone from 1 for 2) in "
+                + "WHERE substring(c_phone, 1, 2) in "
                 + "('" + countryCodes.get(0) + "', ' " + countryCodes.get(1) + "', '" + countryCodes.get(2) + "', '"
                 + countryCodes.get(3) + "', '" + countryCodes.get(4) + "', '" + countryCodes.get(5) + "', '"
                 + countryCodes.get(6)  + "' ) "
                 + "AND c_acctbal > ( SELECT avg(c_acctbal) FROM customer "
                 + "WHERE c_acctbal > 0.00 "
-                + "AND substring (c_phone from 1 for 2) in "
+                + "AND substring (c_phone, 1, 2) in "
                 + "(' " + countryCodes.get(0) + "', ' " + countryCodes.get(1) + "', '" + countryCodes.get(2) + "', ' "
                 + countryCodes.get(3) + "', '" + countryCodes.get(4) + "', '" + countryCodes.get(5) + "', '"
                 + countryCodes.get(6)  + "') ) "

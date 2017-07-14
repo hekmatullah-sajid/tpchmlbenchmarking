@@ -1,12 +1,12 @@
 package de.tuberlin.dima.bdapro.spark.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Random;
+import de.tuberlin.dima.bdapro.spark.tpch.Utils;
 
 /**
  * Created by seema on 07/06/2017.
@@ -35,7 +35,6 @@ public class Query14 extends Query {
     }
     private LocalDate getRandomDate()
     {
-        Random rand = new Random();
         return LocalDate.of(Utils.getRandomInt(1992,1997), Utils.getRandomInt(0,12), 1);
     }
 }

@@ -1,17 +1,15 @@
 package de.tuberlin.dima.bdapro.flink.tpch.batch.queries;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
-import org.apache.flink.api.common.functions.MapFunction;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.java.tuple.Tuple;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.tuberlin.dima.bdapro.flink.tpch.Utils;
 
 /**
  * Created by seema on 06/06/2017.
@@ -45,9 +43,9 @@ public class Query16 extends Query {
                 + "AND p_brand <> '" + brand + "' " + "AND  p_type not like '" + type +"%' "
                 + "AND p_size IN ( " + size1 + ", " + size2 + ", " + size3 + ", " + size4 + ", "
                                 + size5 + ", " + size6 + ", " + size7 + ", " + size8 + " ) "
-                + "AND ps_suppkey NOT IN(  "
+                + "AND NOT EXISTS(  "
                 + "SELECT s_suppkey FROM supplier "
-                + "WHERE s_comment like '%Customer%Complaints%' ) "
+                + "WHERE s_comment like '%Customer%Complaints%' AND s_suppkey = ps_suppkey) "
                 + "GROUP BY p_brand, p_type, p_size ORDER BY supplier_cnt desc, p_brand, p_type, p_size ";
 
         Table res = env.sql(SQLQuery);

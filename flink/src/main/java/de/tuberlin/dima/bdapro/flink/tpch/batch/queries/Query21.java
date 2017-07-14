@@ -2,7 +2,6 @@ package de.tuberlin.dima.bdapro.flink.tpch.batch.queries;
 
 import java.util.List;
 
-import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;

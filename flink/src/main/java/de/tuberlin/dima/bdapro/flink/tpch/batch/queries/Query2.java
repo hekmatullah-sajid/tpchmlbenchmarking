@@ -6,12 +6,11 @@ import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple8;
+import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
 import de.tuberlin.dima.bdapro.flink.tpch.Utils;
 import de.tuberlin.dima.bdapro.flink.tpch.Utils.Nation;
-
-import org.apache.flink.table.api.Table;
 
 
 public class Query2 extends Query {
@@ -43,25 +42,28 @@ public class Query2 extends Query {
 		
 		Table supplier = env.scan("supplier");
 		Table partsupp = env.scan("partsupp");
-		Table part = env.scan("part").filter("p_size = " + pSize)
+		Table part = env.scan("part").filter("p_size = " + pSize )
 				.filter("LIKE(p_type, '%" + pType + "%')"); 
 		Table nation = env.scan("nation");
 		Table region = env.scan("region").filter("r_name = '" + rRegion + "'");
 		
-		Table minCost = part.join(partsupp).where("p_partkey = ps_partkey")
+		Table innerQuery = part.join(partsupp).where("p_partkey = ps_partkey")
 				.join(supplier).where("s_suppkey = ps_suppkey")
 				.join(nation).where("s_nationkey = n_nationkey")
 				.join(region).where("n_regionkey = r_regionkey")
 				.groupBy("p_partkey")
 				.select("min(ps_supplycost) as mincost");
-		Table outterQ =  part.join(partsupp).where("p_partkey = ps_partkey")
+		
+		Table outterQuery =  part.join(partsupp).where("p_partkey = ps_partkey")
 				.join(supplier).where("s_suppkey = ps_suppkey")
 				.join(nation).where("s_nationkey = n_nationkey")
 				.join(region).where("n_regionkey = r_regionkey");
-		Table res = outterQ.join(minCost).where("ps_supplycost = mincost")
+		
+		Table res = outterQuery.join(innerQuery).where("ps_supplycost = mincost")
 				.orderBy("s_acctbal, n_name, s_name, p_partkey")
 				.limit(100)
 				.select(" s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment ");
+		
 		try{
 			return env.toDataSet(res, TypeInformation.of(new TypeHint<Tuple8<Double, String, String, Integer, String, String, String, String>>() {
 			})).map(new MapFunction<Tuple8<Double, String, String, Integer, String, String, String, String>, Tuple8<Double, String, String, Integer, String, String, String, String>>() {
