@@ -63,24 +63,24 @@ public class QueriesTest {
 		}	
 	}
 
-//	@Test
-//	public void Query1() {
-//		final Query1 q1 = new Query1(tableEnv);
-//		final List<Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long>> result = q1
-//				.execute(90);
-//
-//		final Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long> expected = new Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long>(
-//				"A", "F", 37734107.00, 56586554400.73, 53758257134.87, 55909065222.83, 25.52, 38273.13, .05, (long)1478493);
-//
-//		for (final Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long> elem : result) {
-//			if (elem.equals(expected)) {
-//				assertEquals(expected, elem);
-//				return;
-//			}
-//		}
-//		fail("Query1 failed");
-//
-//	}
+	@Test
+	public void Query1() {
+		final Query1 q1 = new Query1(tableEnv);
+		final List<Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long>> result = q1
+				.execute(90);
+
+		final Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long> expected = new Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long>(
+				"A", "F", 37734107.00, 56586554400.73, 53758257134.87, 55909065222.83, 25.52, 38273.13, .05, (long)1478493);
+
+		for (final Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long> elem : result) {
+			if (elem.equals(expected)) {
+				assertEquals(expected, elem);
+				return;
+			}
+		}
+		fail("Query1 failed");
+
+	}
 //
 //	@Test
 //	public void Query2() {

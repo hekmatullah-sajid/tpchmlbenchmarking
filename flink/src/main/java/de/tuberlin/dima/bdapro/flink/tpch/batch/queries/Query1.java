@@ -6,6 +6,7 @@ import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple10;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
@@ -21,7 +22,6 @@ public class Query1 extends Query {
 	public List<Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long>> execute() {
 		return execute(Utils.getRandomInt(60, 120));
 	}
-
 	public List<Tuple10<String, String, Double, Double, Double, Double, Double, Double, Double, Long>> execute(
 			final int delta) {
 		Table lineitem = env.scan("lineitem");

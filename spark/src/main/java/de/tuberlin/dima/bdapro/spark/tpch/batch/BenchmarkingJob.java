@@ -196,11 +196,11 @@ public class BenchmarkingJob {
 		end = System.currentTimeMillis();
 		results.add(" Query20|" + (end - start) + "\r\n");
 		
-		start = System.currentTimeMillis();
-		final Query q21 = new Query21(spark);
-		q21.execute();
-		end = System.currentTimeMillis();
-		results.add(" Query21|" + (end - start) + "\r\n");
+//		start = System.currentTimeMillis();
+//		final Query q21 = new Query21(spark);
+//		q21.execute();
+//		end = System.currentTimeMillis();
+//		results.add(" Query21|" + (end - start) + "\r\n");
 		
 		start = System.currentTimeMillis();
 		final Query q22 = new Query22(spark);

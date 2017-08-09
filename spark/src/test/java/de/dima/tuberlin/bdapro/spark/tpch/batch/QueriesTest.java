@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tuberlin.dima.bdapro.spark.tpch.Utils;
+import de.tuberlin.dima.bdapro.spark.tpch.Utils.Nation;
 import de.tuberlin.dima.bdapro.spark.tpch.batch.TableSourceProvider;
 
 
@@ -146,24 +147,24 @@ public class QueriesTest {
 //
 //	}
 //
-//	@Test
-//	public void Query7() {
-//		final Query7 q7 = new Query7(spark);
-//		final List<Row> result = q7.execute(Nation.FRANCE.getName(), Nation.GERMANY.getName());
-//
-//		for (final Row elem : result) {
-//
-//			if (elem.getString(0).equals("FRANCE") &&
-//					elem.getString(1).equals("GERMANY") && 
-//					elem.getString(2).equals("1995") && 
-//					Utils.convertToTwoDecimal(elem.getDouble(3)) == 54639732.73) {
-//				assertEquals(0, 0);
-//				return;
-//			}
-//		}
-//		fail("Query7 failed");
-//
-//	}
+	@Test
+	public void Query7() {
+		final Query7 q7 = new Query7(spark);
+		final List<Row> result = q7.execute(Nation.FRANCE.getName(), Nation.GERMANY.getName());
+
+		for (final Row elem : result) {
+
+			if (elem.getString(0).equals("FRANCE") &&
+					elem.getString(1).equals("GERMANY") && 
+					elem.getString(2).equals("1995") && 
+					Utils.convertToTwoDecimal(elem.getDouble(3)) == 54639732.73) {
+				assertEquals(0, 0);
+				return;
+			}
+		}
+		fail("Query7 failed");
+
+	}
 //
 //	@Test
 //	public void Query8() {
@@ -349,19 +350,19 @@ public class QueriesTest {
 //		fail("Query18 failed");
 //	}
 //	
-	@Test
-	public void Query19() {
-		final Query19 q19 = new Query19(spark);
-		final List<Row> result = q19.execute("Brand#12", "Brand#23", "Brand#34", 1, 10, 20);
-
-		for (final Row elem : result) {
-			if (Utils.convertToTwoDecimal(elem.getDouble(0)) == 3083843.06) {
-				assertEquals(0, 0);
-				return;
-			}
-		}
-		fail("Query19 failed");
-	}
+//	@Test
+//	public void Query19() {
+//		final Query19 q19 = new Query19(spark);
+//		final List<Row> result = q19.execute("Brand#12", "Brand#23", "Brand#34", 1, 10, 20);
+//
+//		for (final Row elem : result) {
+//			if (Utils.convertToTwoDecimal(elem.getDouble(0)) == 3083843.06) {
+//				assertEquals(0, 0);
+//				return;
+//			}
+//		}
+//		fail("Query19 failed");
+//	}
 //	
 //	@Test
 //	public void Query20() {

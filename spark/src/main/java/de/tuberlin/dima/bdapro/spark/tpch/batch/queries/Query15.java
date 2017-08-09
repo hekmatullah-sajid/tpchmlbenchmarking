@@ -25,16 +25,16 @@ public class Query15 extends Query {
 	
 	public List<Row> execute(final LocalDate rndDate) {
 		
-		String viewSQL = "SELECT l_suppkey as supplier_no, SUM(l_extendedprice * (1 - l_discount)) as total_revenue FROM lineitem WHERE l_shipdate >= '" + rndDate.toString() +"' "
-				+ "and l_shipdate < '" + rndDate.plusMonths(3).toString() + "' "
-				+ "GROUP BY l_suppkey";
-		
+		String viewSQL = "SELECT l_suppkey as supplier_no, SUM(l_extendedprice * (1 - l_discount)) as total_revenue "
+				+ "FROM lineitem WHERE l_shipdate >= '" + rndDate.toString() +"' "
+				+ "and l_shipdate < '" + rndDate.plusMonths(3).toString() + "' GROUP BY l_suppkey";
 		
 		List<Row> viewRevenue = spark.sql(viewSQL).collectAsList();
 		StructField[] viewStrct = new StructField[] {
 				DataTypes.createStructField("supplier_no", DataTypes.IntegerType, false),
 				DataTypes.createStructField("total_revenue", DataTypes.DoubleType, false)
 		};
+		
 		spark.createDataFrame(viewRevenue, new StructType(viewStrct)).createOrReplaceTempView("viewrevenue");
 		
 		String resSQL = "SELECT s_suppkey, s_name, s_address, s_phone, total_revenue FROM supplier, viewrevenue "
