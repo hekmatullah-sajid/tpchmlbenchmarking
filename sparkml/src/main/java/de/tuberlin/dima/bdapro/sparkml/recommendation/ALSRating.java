@@ -4,7 +4,7 @@ package de.tuberlin.dima.bdapro.sparkml.recommendation;
  * Created by seema on 08.08.17.
  */
 
-import de.tuberlin.dima.bdapro.spark.ml.Config;
+import de.tuberlin.dima.bdapro.sparkml.Config;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -103,12 +103,12 @@ public class ALSRating {
         System.out.println("Root-mean-square error = " + rmse);
 
         // Generate top 10 movie recommendations for each user
-        Dataset<Row> userRecs = model.recommendForAllUsers(10);
+        //Dataset<Row> userRecs = model.recommendForAllUsers(10);
         // Generate top 10 user recommendations for each movie
-        Dataset<Row> movieRecs = model.recommendForAllItems(10);
+        //Dataset<Row> movieRecs = model.recommendForAllItems(10);
         // $example off$
-        userRecs.show();
-        movieRecs.show();
+        //userRecs.show();
+        //movieRecs.show();
 
         spark.stop();
     }
