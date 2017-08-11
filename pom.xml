@@ -15,9 +15,10 @@
 
 	<modules>
 		<module>flink</module>
+		<module>flinkml</module>
+
 		<module>spark</module>
 		<module>sparkml</module>
-
 	</modules>
 
 	<dependencyManagement>
