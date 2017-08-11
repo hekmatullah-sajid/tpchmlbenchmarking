@@ -1,2 +1,4 @@
 *.idea
 *.iml
+tpch2.17.2/**
+target/**
