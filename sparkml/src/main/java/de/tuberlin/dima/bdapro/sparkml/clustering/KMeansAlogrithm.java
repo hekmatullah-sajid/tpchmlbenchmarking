@@ -1,4 +1,4 @@
-package de.tuberlin.dima.bdapro.sparkml;
+package de.tuberlin.dima.bdapro.sparkml.clustering;
 
 import org.apache.spark.ml.clustering.KMeans;
 import org.apache.spark.ml.clustering.KMeansModel;

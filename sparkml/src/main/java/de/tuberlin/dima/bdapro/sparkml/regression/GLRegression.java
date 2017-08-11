@@ -1,4 +1,4 @@
-package de.tuberlin.dima.bdapro.sparkml;
+package de.tuberlin.dima.bdapro.sparkml.regression;
 
 import org.apache.spark.ml.linalg.Vectors;
 import org.apache.spark.ml.regression.LinearRegression;
@@ -25,7 +25,7 @@ public class GLRegression {
 			      .getOrCreate();
 
 		  Dataset<Row> training = spark.read().format("libsvm")
-			      .load("C:\\E2006.train");
+			      .load("C:\\100lines.txt");
 
 				LinearRegression lr = new LinearRegression()
 				  .setMaxIter(20)

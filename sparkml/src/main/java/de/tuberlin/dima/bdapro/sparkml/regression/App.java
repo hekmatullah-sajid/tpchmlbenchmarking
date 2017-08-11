@@ -1,4 +1,4 @@
-package de.tuberlin.dima.bdapro.sparkml;
+package de.tuberlin.dima.bdapro.sparkml.regression;
 
 /**
  * Hello world!
