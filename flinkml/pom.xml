@@ -19,6 +19,11 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>de.tuberlin.dima.bdapro</groupId>
+        <artifactId>tpchmlbenchmarking</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
     <artifactId>flink-ml</artifactId>
     <packaging>jar</packaging>
@@ -43,9 +48,9 @@ under the License.
         <maven.shade.plugin.version>2.4.1</maven.shade.plugin.version>
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
         <scala.maven.plugin.version>3.2.2</scala.maven.plugin.version>
-        <scala.binary.version>2.10</scala.binary.version>
+        <scala.binary.version>2.11</scala.binary.version>
         <java.version>1.8</java.version>
-        <flink.version>1.2.1</flink.version>
+        <flink.version>1.3.1</flink.version>
         <kafka.version>0.10</kafka.version>
         <slf4j.version>1.7.7</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -63,17 +68,12 @@ under the License.
             <artifactId>flink-streaming-scala_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.flink</groupId>-->
-            <!--<artifactId>flink-clients_${scala.binary.version}</artifactId>-->
-            <!--<version>${flink.version}</version>-->
-        <!--</dependency>-->
-      <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-clients</artifactId>
-          <version>0.10.2</version>
-      </dependency>
-  
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
