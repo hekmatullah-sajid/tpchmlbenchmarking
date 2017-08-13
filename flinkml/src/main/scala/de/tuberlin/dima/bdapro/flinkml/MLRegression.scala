@@ -13,21 +13,13 @@ object MLRegression {
   def main(args:Array[String]) ={
     
     print("Hello World")
-
-    val params: ParameterTool = ParameterTool.fromArgs(args)
-    val env = ExecutionEnvironment.getExecutionEnvironment
-    env.getConfig.setGlobalJobParameters(params)
-
-    val pathToTrainingFile = params.getRequired("training")
-    val pathToTestingFile = params.get("testing")
-
-    // Read the training data set, from a LibSVM formatted file
-    val trainingDS: DataSet[LabeledVector] = env.readLibSVM(pathToTrainingFile)
-      
-    val dataSet: DataSet[LabeledVector] = MLUtils.readLibSVM(env, "/path/to/svmguide1")
-    val trainTestData: DataSet[TrainTestDataSet] = Splitter.trainTestSplit(dataSet)
-    val trainingData: DataSet[LabeledVector] = trainTestData.training
-    val testingData: DataSet[Vector] = trainTestData.testing.map(lv => lv.vector)
+     val env = ExecutionEnvironment.getExecutionEnvironment
+     
+    val dataSet: DataSet[LabeledVector] = MLUtils.readLibSVM(env, "/media/sf_VM-SharedFoler/100lines.txt")
+    val dataMultiRandom: Array[DataSet[LabeledVector]] = Splitter.multiRandomSplit(dataSet, Array(0.8, 0.2))
+   
+    val trainingData: DataSet[LabeledVector] = dataMultiRandom(0)
+    val testingData: DataSet[Vector] = dataMultiRandom(1).map(lv => lv.vector)
     
     val mlr = MultipleLinearRegression()
       .setStepsize(1.0)
@@ -37,6 +29,7 @@ object MLRegression {
     mlr.fit(trainingData)
     
     // The fitted model can now be used to make predictions
-    val predictions: DataSet[LabeledVector] = mlr.predict(testingData)
+    val predictions = mlr.predict(testingData)
+        print("Hello World")
   }
 }
