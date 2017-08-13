@@ -32,18 +32,13 @@ object SVMClassification {
     val testingDS: DataSet[LabeledVector] = env.readLibSVM(pathToTestingFile)
     val evaluationDS: DataSet[(Double, Double)] = svm.evaluate(testingDS.map(x => (x.vector, x.label)))
     evaluationDS.print()
-    env.execute("SVM Classification")
 
-//    val predictionPairs = svm.evaluate(test)
-//
-//    val absoluteErrorSum = predictionPairs.collect().map{
-//      case (truth, prediction) => Math.abs(truth - prediction)}.sum
-//
-//    absoluteErrorSum should be < 15.0
-//def calculateAccuracy(predictions: RDD[(Double, Double)], numExamples: Long): Double = {
-//  predictions.map{case (pred, label) =>
-//    if (pred == label) 1.0 else 0.0
-//  }.sum() * 100.0 / numExamples
+    val count = evaluationDS.count()
+    val accuracy = evaluationDS .collect().map{
+      case (pred, label) => if (pred == label) 1.0 else 0.0}.sum
+
+    print(accuracy * 100.0 / count )
+
   }
 
 }
