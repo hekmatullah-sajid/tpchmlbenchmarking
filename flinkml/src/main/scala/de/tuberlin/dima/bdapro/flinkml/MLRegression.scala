@@ -1,4 +1,12 @@
 package de.tuberlin.dima.bdapro.flinkml
+
+import org.apache.flink.api.scala.DataSet
+import org.apache.flink.ml.MLUtils
+import org.apache.flink.ml.common.LabeledVector
+import org.apache.flink.ml.preprocessing.Splitter
+import org.apache.flink.ml.preprocessing.Splitter.TrainTestDataSet
+import org.apache.flink.ml.regression.MultipleLinearRegression
+
 object MLRegression {
   def main(args:Array[String]) ={
     
