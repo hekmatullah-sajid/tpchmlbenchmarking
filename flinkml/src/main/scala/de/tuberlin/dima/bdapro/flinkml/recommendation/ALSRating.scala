@@ -1,7 +1,7 @@
 package scala.de.tuberlin.dima.bdapro.flinkml.recommendation
 
 import org.apache.flink.api.java.utils.ParameterTool
-import org.apache.flink.api.scala.{DataSet, ExecutionEnvironment}
+import org.apache.flink.api.scala.{DataSet, _}
 import org.apache.flink.ml.common.ParameterMap
 import org.apache.flink.ml.recommendation.ALS
 
