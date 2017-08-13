@@ -30,8 +30,8 @@ object SVMClassification {
     svm.fit(trainingDS)
     // Read the testing data set
     val testingDS: DataSet[LabeledVector] = env.readLibSVM(pathToTestingFile)
-    val evaluationnDS: DataSet[(Double, Double)] = svm.evaluate(testingDS.map(x => (x.vector, x.label)))
-    evaluationnDS.print()
+    val evaluationDS: DataSet[(Double, Double)] = svm.evaluate(testingDS.map(x => (x.vector, x.label)))
+    evaluationDS.print()
     env.execute("SVM Classification")
 
 //    val predictionPairs = svm.evaluate(test)
