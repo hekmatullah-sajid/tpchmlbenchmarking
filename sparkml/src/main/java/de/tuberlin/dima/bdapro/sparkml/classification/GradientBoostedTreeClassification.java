@@ -5,6 +5,7 @@ package de.tuberlin.dima.bdapro.sparkml.classification;
  */
 
 import de.tuberlin.dima.bdapro.sparkml.Config;
+import de.tuberlin.dima.bdapro.sparkml.MLAlgorithmBase;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
@@ -16,13 +17,17 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-public class GradientBoostedTreeClassification {
-    public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("JavaGradientBoostedTreeClassifierExample")
-                .config("spark.master", "local")
-                .getOrCreate();
+public class GradientBoostedTreeClassification extends MLAlgorithmBase{
+    public GradientBoostedTreeClassification(final SparkSession spark)
+    {
+        super(spark);
+    }
+    public void execute() {
+//        SparkSession spark = SparkSession
+//                .builder()
+//                .appName("JavaGradientBoostedTreeClassifierExample")
+//                .config("spark.master", "local")
+//                .getOrCreate();
 
         // $example on$
         // Load and parse the data file, converting it to a DataFrame.
@@ -84,10 +89,10 @@ public class GradientBoostedTreeClassification {
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test Error = " + (1.0 - accuracy));
 
-        GBTClassificationModel gbtModel = (GBTClassificationModel)(model.stages()[2]);
-        System.out.println("Learned classification GBT model:\n" + gbtModel.toDebugString());
-        // $example off$
+//        GBTClassificationModel gbtModel = (GBTClassificationModel)(model.stages()[2]);
+//        System.out.println("Learned classification GBT model:\n" + gbtModel.toDebugString());
 
-        spark.stop();
+
+        //spark.stop();
     }
 }

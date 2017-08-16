@@ -1,6 +1,7 @@
 package de.tuberlin.dima.bdapro.sparkml.classification;
 
 import de.tuberlin.dima.bdapro.sparkml.Config;
+import de.tuberlin.dima.bdapro.sparkml.MLAlgorithmBase;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
@@ -15,13 +16,17 @@ import org.apache.spark.sql.SparkSession;
 /**
  * Created by seema on 07.08.17.
  */
-public class RandomForestClassification {
-    public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("JavaRandomForestClassifierExample")
-                .config("spark.master", "local")
-                .getOrCreate();
+public class RandomForestClassification extends MLAlgorithmBase {
+    public RandomForestClassification(final SparkSession spark)
+    {
+        super(spark);
+    }
+    public void execute() {
+//        SparkSession spark = SparkSession
+//                .builder()
+//                .appName("JavaRandomForestClassifierExample")
+//                .config("spark.master", "local")
+//                .getOrCreate();
 
         // $example on$
         // Load and parse the data file, converting it to a DataFrame.
@@ -80,10 +85,10 @@ public class RandomForestClassification {
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test Error = " + (1.0 - accuracy));
 
-        RandomForestClassificationModel rfModel = (RandomForestClassificationModel)(model.stages()[2]);
-        System.out.println("Learned classification forest model:\n" + rfModel.toDebugString());
-        // $example off$
-
-        spark.stop();
+//        RandomForestClassificationModel rfModel = (RandomForestClassificationModel)(model.stages()[2]);
+//        System.out.println("Learned classification forest model:\n" + rfModel.toDebugString());
+//        // $example off$
+//
+//        spark.stop();
     }
 }

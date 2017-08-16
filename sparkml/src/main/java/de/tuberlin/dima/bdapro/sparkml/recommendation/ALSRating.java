@@ -5,6 +5,7 @@ package de.tuberlin.dima.bdapro.sparkml.recommendation;
  */
 
 import de.tuberlin.dima.bdapro.sparkml.Config;
+import de.tuberlin.dima.bdapro.sparkml.MLAlgorithmBase;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -17,7 +18,11 @@ import org.apache.spark.ml.evaluation.RegressionEvaluator;
 import org.apache.spark.ml.recommendation.ALS;
 import org.apache.spark.ml.recommendation.ALSModel;
 
-public class ALSRating {
+public class ALSRating extends MLAlgorithmBase{
+    public ALSRating(final SparkSession spark)
+    {
+        super(spark);
+    }
 
     public static class Rating implements Serializable {
     private int userId;
@@ -64,15 +69,15 @@ public class ALSRating {
 }
     // $example off$
 
-    public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("JavaALSExample")
-                .config("spark.master", "local")
-                .getOrCreate();
+    public void execute() {
+//        SparkSession spark = SparkSession
+//                .builder()
+//                .appName("JavaALSExample")
+//                .config("spark.master", "local")
+//                .getOrCreate();
 
         // $example on$
-        String inputfile = Config.pathToRecommendationrainingSet();
+        String inputfile = Config.pathToRecommendationTrainingSet();
         JavaRDD<Rating> ratingsRDD = spark
                 .read().textFile(inputfile).javaRDD()
                 .map(Rating::parseRating);
@@ -110,6 +115,6 @@ public class ALSRating {
         //userRecs.show();
         //movieRecs.show();
 
-        spark.stop();
+        //spark.stop();
     }
 }

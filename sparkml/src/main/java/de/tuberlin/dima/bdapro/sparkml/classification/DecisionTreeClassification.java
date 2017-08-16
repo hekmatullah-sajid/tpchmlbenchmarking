@@ -2,6 +2,7 @@ package de.tuberlin.dima.bdapro.sparkml.classification;
 
 import de.tuberlin.dima.bdapro.sparkml.Config;
 
+import de.tuberlin.dima.bdapro.sparkml.MLAlgorithmBase;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
@@ -17,13 +18,19 @@ import org.apache.spark.sql.SparkSession;
 /**
  * Created by seema on 07.08.17.
  */
-public class DecisionTreeClassification {
-    public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("JavaDecisionTreeClassificationExample")
-                .config("spark.master", "local")
-                .getOrCreate();
+public class DecisionTreeClassification extends MLAlgorithmBase{
+
+    public DecisionTreeClassification(final SparkSession spark)
+    {
+        super(spark);
+    }
+
+    public void execute(){
+//        SparkSession spark = SparkSession
+//                .builder()
+//                .appName("JavaDecisionTreeClassificationExample")
+//                .config("spark.master", "local")
+//                .getOrCreate();
 
 //         $example on$
 //         Load the data stored in LIBSVM format as a DataFrame.
@@ -86,11 +93,11 @@ public class DecisionTreeClassification {
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test Error = " + (1.0 - accuracy));
 
-        DecisionTreeClassificationModel treeModel =
-                (DecisionTreeClassificationModel) (model.stages()[2]);
-        System.out.println("Learned classification tree model:\n" + treeModel.toDebugString());
+//        DecisionTreeClassificationModel treeModel =
+//                (DecisionTreeClassificationModel) (model.stages()[2]);
+//        System.out.println("Learned classification tree model:\n" + treeModel.toDebugString());
         // $example off$
 
-        spark.stop();
+//        spark.stop();
     }
 }

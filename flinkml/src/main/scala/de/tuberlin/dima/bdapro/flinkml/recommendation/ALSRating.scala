@@ -1,6 +1,6 @@
 package scala.de.tuberlin.dima.bdapro.flinkml.recommendation
 
-import org.apache.flink.api.java.utils.ParameterTool
+import de.tuberlin.dima.bdapro.flinkml.Config
 import org.apache.flink.api.scala.{DataSet, _}
 import org.apache.flink.ml.common.ParameterMap
 import org.apache.flink.ml.recommendation.ALS
@@ -8,22 +8,22 @@ import org.apache.flink.ml.recommendation.ALS
 /**
   * Created by seema on 13.08.17.
   */
-object ALSRating {
-  def main(args: Array[String]) {
+class ALSRating (val env : ExecutionEnvironment) {
+  val localenv: ExecutionEnvironment = env
 
-    //params
-    val params: ParameterTool = ParameterTool.fromArgs(args)
+  def execute() {
 
-    //env
-    val env = ExecutionEnvironment.getExecutionEnvironment
+    val pathToTrainingFile = Config.pathToRecommendationTrainingSet
+    val pathToTestingFile = Config.pathToRecommendationTestingSet
 
     // make parameters available in the web interface
-    env.getConfig.setGlobalJobParameters(params)
+    //env.getConfig.setGlobalJobParameters(params)
 
     // Read input data set from a csv file
-    if (params.has("training")) {
+
       val inputDS: DataSet[(Int, Int, Double)] = env
-        .readCsvFile[(Int, Int, Double)](params.get("training"),ignoreFirstLine = true)
+        .readCsvFile[(Int, Int, Double)](pathToTrainingFile, ignoreFirstLine = true)
+
 
       // Setup the ALS learner
       val als = ALS()
@@ -41,47 +41,22 @@ object ALSRating {
 
       // ********* For Testing the model *************** //
       // Read the testing data set from a csv file
-      val testingDS: DataSet[(Int, Int)] = env.readCsvFile[(Int, Int)](params.get("testing"),ignoreFirstLine = true)
+      val testingDS: DataSet[(Int, Int,Double)] = env.readCsvFile[(Int, Int, Double)](pathToTestingFile , ignoreFirstLine = true)
+
       // Calculate the ratings according to the matrix factorization
-      val predictedRatings = als.predict(testingDS)
-      predictedRatings.print()
-      //als.evaluate(testingDS).print()
-      // ********* For Testing the model *************** //
+      val predictedRatings = als.predict(testingDS.map(x => (x._1, x._2)))
+      //predictedRatings.print()
 
-      // item Factors
-      //      val itemFactors = als
-      //        .factorsOption.get._2
-      //        .map { t => new OutputFactor(t.id, "I", t.factors) }
+      val predictionsAndRatings: DataSet[(Double, Double)] =
+        testingDS.join(predictedRatings).where(0, 1).equalTo(0, 1) { (l, r) => (l._3, r._3) }
+      val count = predictionsAndRatings.count()
+      val mse = predictionsAndRatings.collect().map{
+        case (rating, prediction) =>
+          val err = rating - prediction
+          err * err }.sum
 
-      // user Factors
-      //      val userFactors = als
-      //        .factorsOption.get._1
-      //        .map { t => new OutputFactor(t.id, "U", t.factors) }
+      print(math.sqrt(mse/count))
 
-      // prepare output
-      //      if (params.has("itemFactors") && params.has("userFactors")) {
-      //        itemFactors.writeAsText(params.get("itemFactors"), WriteMode.OVERWRITE)
-      //        userFactors.writeAsText(params.get("userFactors"), WriteMode.OVERWRITE)
-      //      } else {
-      //        println("Printing results to stdout. Use --itemFactors and --userFactors to specify output locations.")
-      //        itemFactors.print()
-      //        userFactors.print()
-      //      }
-      //env.execute("ALS Training")
-    } else {
-      println("Use --input to specify file input.")
-    }
+
   }
-
-  /**
-    * case class to represent the user or item features
-    *
-    * @param id
-    * @param typeOfFeature
-    * @param factors
-    */
-  case class OutputFactor(id: Long, typeOfFeature: String, factors: Array[Double]) {
-    override def toString: String = s"$id,$typeOfFeature,${factors.mkString(";")}"
-  }
-
 }
