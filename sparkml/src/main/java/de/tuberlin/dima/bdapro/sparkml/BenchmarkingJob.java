@@ -48,47 +48,47 @@ public class BenchmarkingJob {
         long start = 0;
         long end = 0;
 
-//        start = System.currentTimeMillis();
-//        final DecisionTreeClassification dtClassification = new DecisionTreeClassification(spark);
-//        dtClassification.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" DecisionTreeClassification|" + (end - start) + "\r\n");
-//
-//        start = System.currentTimeMillis();
-//        final GradientBoostedTreeClassification gbtClassification = new GradientBoostedTreeClassification(spark);
-//        gbtClassification.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" GradientBoostedTreeClassification|" + (end - start) + "\r\n");
-//
-//        start = System.currentTimeMillis();
-//        final NaiveBayesClassification nbClassification = new NaiveBayesClassification(spark);
-//        nbClassification.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" NaiveBayesClassification|" + (end - start) + "\r\n");
-//
-//        start = System.currentTimeMillis();
-//        final RandomForestClassification rfClassification = new RandomForestClassification(spark);
-//        rfClassification.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" RandomForestClassification|" + (end - start) + "\r\n");
-//
-//        start = System.currentTimeMillis();
-//        final SVMClassification svmClassification = new SVMClassification(spark);
-//        svmClassification.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" SVMClassification|" + (end - start) + "\r\n");
-//
-//        start = System.currentTimeMillis();
-//        final KMeansClustering kmeansClustering = new KMeansClustering(spark);
-//        kmeansClustering.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" KMeansClustering|" + (end - start) + "\r\n");
-//
-//        start = System.currentTimeMillis();
-//        final ALSRating alsRating = new ALSRating(spark);
-//        alsRating.execute();
-//        end = System.currentTimeMillis();
-//        results.add(" ALSRating|" + (end - start) + "\r\n");
+        start = System.currentTimeMillis();
+        final DecisionTreeClassification dtClassification = new DecisionTreeClassification(spark);
+        dtClassification.execute();
+        end = System.currentTimeMillis();
+        results.add(" DecisionTreeClassification|" + (end - start) + "\r\n");
+
+        start = System.currentTimeMillis();
+        final GradientBoostedTreeClassification gbtClassification = new GradientBoostedTreeClassification(spark);
+        gbtClassification.execute();
+        end = System.currentTimeMillis();
+        results.add(" GradientBoostedTreeClassification|" + (end - start) + "\r\n");
+
+        start = System.currentTimeMillis();
+        final NaiveBayesClassification nbClassification = new NaiveBayesClassification(spark);
+        nbClassification.execute();
+        end = System.currentTimeMillis();
+        results.add(" NaiveBayesClassification|" + (end - start) + "\r\n");
+
+        start = System.currentTimeMillis();
+        final RandomForestClassification rfClassification = new RandomForestClassification(spark);
+        rfClassification.execute();
+        end = System.currentTimeMillis();
+        results.add(" RandomForestClassification|" + (end - start) + "\r\n");
+
+        start = System.currentTimeMillis();
+        final SVMClassification svmClassification = new SVMClassification(spark);
+        svmClassification.execute();
+        end = System.currentTimeMillis();
+        results.add(" SVMClassification|" + (end - start) + "\r\n");
+
+        start = System.currentTimeMillis();
+        final KMeansClustering kmeansClustering = new KMeansClustering(spark);
+        kmeansClustering.execute();
+        end = System.currentTimeMillis();
+        results.add(" KMeansClustering|" + (end - start) + "\r\n");
+
+        start = System.currentTimeMillis();
+        final ALSRating alsRating = new ALSRating(spark);
+        alsRating.execute();
+        end = System.currentTimeMillis();
+        results.add(" ALSRating|" + (end - start) + "\r\n");
 
         start = System.currentTimeMillis();
         final DecisionTreeRegression dtRegression = new DecisionTreeRegression(spark);
