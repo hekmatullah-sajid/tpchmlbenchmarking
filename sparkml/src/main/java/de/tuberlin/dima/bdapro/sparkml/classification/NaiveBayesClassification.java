@@ -5,6 +5,7 @@ package de.tuberlin.dima.bdapro.sparkml.classification;
  */
 
 import de.tuberlin.dima.bdapro.sparkml.Config;
+import de.tuberlin.dima.bdapro.sparkml.MLAlgorithmBase;
 import org.apache.spark.ml.classification.NaiveBayes;
 import org.apache.spark.ml.classification.NaiveBayesModel;
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator;
@@ -12,13 +13,17 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-public class NaiveBayesClassification {
-    public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("JavaNaiveBayesExample")
-                .config("spark.master", "local")
-                .getOrCreate();
+public class NaiveBayesClassification extends MLAlgorithmBase{
+    public NaiveBayesClassification(final SparkSession spark)
+    {
+        super(spark);
+    }
+    public void execute() {
+//        SparkSession spark = SparkSession
+//                .builder()
+//                .appName("JavaNaiveBayesExample")
+//                .config("spark.master", "local")
+//                .getOrCreate();
 
         // $example on$
         // Load training data
@@ -49,6 +54,6 @@ public class NaiveBayesClassification {
         System.out.println("Test set accuracy = " + accuracy);
         // $example off$
 
-        spark.stop();
+        //spark.stop();
     }
 }
