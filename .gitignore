@@ -3,5 +3,5 @@
 tpch2.17.2/**
 target/**
 sparkml/target/**
-dataset_ml/**
+dataset_ml/*
 flinkml/target/**
