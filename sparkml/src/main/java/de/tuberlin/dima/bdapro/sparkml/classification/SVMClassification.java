@@ -29,7 +29,7 @@ public class SVMClassification extends MLAlgorithmBase{
         // Load training data
         String inputfile = Config.pathToClassificationTrainingSet();
         Dataset<Row> training = spark.read().format("libsvm")
-                .load(inputfile);
+                .load(inputfile).cache();
 
         LinearSVC lsvc = new LinearSVC()
                 .setMaxIter(10)

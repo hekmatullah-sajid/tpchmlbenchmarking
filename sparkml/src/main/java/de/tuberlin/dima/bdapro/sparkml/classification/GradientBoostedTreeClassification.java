@@ -35,7 +35,8 @@ public class GradientBoostedTreeClassification extends MLAlgorithmBase{
         Dataset<Row> data = spark
                 .read()
                 .format("libsvm")
-                .load(inputfile);
+                .load(inputfile)
+                .cache();
 
         // Index labels, adding metadata to the label column.
         // Fit on whole dataset to include all labels in index.

@@ -31,7 +31,7 @@ public class RandomForestClassification extends MLAlgorithmBase {
         // $example on$
         // Load and parse the data file, converting it to a DataFrame.
         String inputfile = Config.pathToClassificationTrainingSet();
-        Dataset<Row> data = spark.read().format("libsvm").load(inputfile);
+        Dataset<Row> data = spark.read().format("libsvm").load(inputfile).cache();
 
         // Index labels, adding metadata to the label column.
         // Fit on whole dataset to include all labels in index.

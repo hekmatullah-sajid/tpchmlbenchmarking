@@ -38,7 +38,8 @@ public class DecisionTreeClassification extends MLAlgorithmBase{
         Dataset<Row> data = spark
                 .read()
                 .format("libsvm")
-                .load(inputfile);
+                .load(inputfile)
+                .cache();
 
 
 

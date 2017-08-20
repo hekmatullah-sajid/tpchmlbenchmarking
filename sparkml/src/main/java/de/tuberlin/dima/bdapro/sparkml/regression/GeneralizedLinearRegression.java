@@ -26,7 +26,7 @@ public class GeneralizedLinearRegression extends MLAlgorithmBase {
 		//			      .getOrCreate();
 		String inputfile = Config.pathToRegressionTrainingSet();
 		Dataset<Row> data = spark.read().format("libsvm")
-		  .load(inputfile);
+		  .load(inputfile).cache();
 
 		LinearRegression lr = new LinearRegression()
 		  .setMaxIter(20)

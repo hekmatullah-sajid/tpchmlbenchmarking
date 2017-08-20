@@ -26,7 +26,7 @@ public class KMeansClustering extends MLAlgorithmBase{
 		// Loads data.
 		String inputfile = Config.pathToClusteringTrainingSet();
 		Dataset<Row> tempdataset = spark.read().format("libsvm")
-				.load(inputfile);
+				.load(inputfile).cache();
 		
 		//Drop the label and use the dataset for clustering
 		Dataset<Row> dataset = tempdataset.drop("label");

@@ -29,7 +29,7 @@ public class NaiveBayesClassification extends MLAlgorithmBase{
         // Load training data
         String inputfile = Config.pathToClassificationTrainingSet();
         Dataset<Row> dataFrame =
-                spark.read().format("libsvm").load(inputfile);
+                spark.read().format("libsvm").load(inputfile).cache();
         // Split the data into train and test
         Dataset<Row>[] splits = dataFrame.randomSplit(new double[]{0.6, 0.4}, 1234L);
         Dataset<Row> train = splits[0];

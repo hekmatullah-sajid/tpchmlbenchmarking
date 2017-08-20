@@ -80,7 +80,7 @@ public class ALSRating extends MLAlgorithmBase{
         String inputfile = Config.pathToRecommendationTrainingSet();
         JavaRDD<Rating> ratingsRDD = spark
                 .read().textFile(inputfile).javaRDD()
-                .map(Rating::parseRating);
+                .map(Rating::parseRating).cache();
         Dataset<Row> ratings = spark.createDataFrame(ratingsRDD, Rating.class);
         Dataset<Row>[] splits = ratings.randomSplit(new double[]{0.8, 0.2});
         Dataset<Row> training = splits[0];
