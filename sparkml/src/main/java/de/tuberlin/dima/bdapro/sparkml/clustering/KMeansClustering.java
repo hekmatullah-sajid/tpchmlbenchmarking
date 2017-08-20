@@ -15,7 +15,7 @@ public class KMeansClustering extends MLAlgorithmBase{
 		super(spark);
 	}
 
-	public void execute() {
+	public double execute() {
 		//		 SparkSession spark = SparkSession
 		//			      .builder()
 		//			      .master("local[2]")
@@ -25,24 +25,26 @@ public class KMeansClustering extends MLAlgorithmBase{
 		// $example on$
 		// Loads data.
 		String inputfile = Config.pathToClusteringTrainingSet();
-		Dataset<Row> dataset = spark.read().format("libsvm")
+		Dataset<Row> tempdataset = spark.read().format("libsvm")
 				.load(inputfile);
+		
+		//Drop the label and use the dataset for clustering
+		Dataset<Row> dataset = tempdataset.drop("label");
 
-		// Trains a k-means model.
-		KMeans kmeans = new KMeans().setK(2).setSeed(1L);
+		// Training the k-means model.
+		KMeans kmeans = new KMeans().setK(100).setSeed(1L);
 		KMeansModel model = kmeans.fit(dataset);
 
-		// Evaluate clustering by computing Within Set Sum of Squared Errors.
+		// Evaluate clustering by computing - Within Set Sum of Squared Errors -.
 		double WSSSE = model.computeCost(dataset);
 		System.out.println("Within Set Sum of Squared Errors = " + WSSSE);
-
+		return WSSSE;
 		// Shows the result.
-		Vector[] centers = model.clusterCenters();
-		System.out.println("Cluster Centers: ");
-		for (Vector center: centers) {
-		  System.out.println(center);
-		}
-		// $example off$
+//		Vector[] centers = model.clusterCenters();
+//		System.out.println("Cluster Centers: ");
+//		for (Vector center: centers) {
+//		  System.out.println(center);
+//		}
 
 		//spark.stop();
 

@@ -18,7 +18,7 @@ public class SVMClassification extends MLAlgorithmBase{
     {
         super(spark);
     }
-    public void execute() {
+    public double execute() {
 //        SparkSession spark = SparkSession
 //                .builder()
 //                .appName("JavaLinearSVCExample")
@@ -47,6 +47,7 @@ public class SVMClassification extends MLAlgorithmBase{
                 .setMetricName("accuracy");
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test set accuracy = " + accuracy);
+        return accuracy;
         // Print the coefficients and intercept for LinearSVC
 //        System.out.println("Coefficients: "
 //                + lsvcModel.coefficients() + " Intercept: " + lsvcModel.intercept());

@@ -8,7 +8,6 @@ import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.evaluation.RegressionEvaluator;
 import org.apache.spark.ml.feature.VectorIndexer;
 import org.apache.spark.ml.feature.VectorIndexerModel;
-import org.apache.spark.ml.regression.DecisionTreeRegressionModel;
 import org.apache.spark.ml.regression.DecisionTreeRegressor;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -20,7 +19,7 @@ public class DecisionTreeRegression extends MLAlgorithmBase{
 		super(spark);
 	}
 
-	public void execute() {
+	public double execute() {
 
         //		SparkSession spark = SparkSession
         //			      .builder()
@@ -41,8 +40,8 @@ public class DecisionTreeRegression extends MLAlgorithmBase{
         .setMaxCategories(4)
         .fit(data);
 
-        // Split the data into training and test sets (30% held out for testing).
-        Dataset<Row>[] splits = data.randomSplit(new double[]{0.7, 0.3});
+		// Split the data into training and test sets (80% training and 20% held for testing).
+        Dataset<Row>[] splits = data.randomSplit(new double[]{0.8, 0.2});
         Dataset<Row> trainingData = splits[0];
         Dataset<Row> testData = splits[1];
 
@@ -61,7 +60,7 @@ public class DecisionTreeRegression extends MLAlgorithmBase{
         Dataset<Row> predictions = model.transform(testData);
 
         // Select example rows to display.
-        predictions.select("label", "features").show(5);
+        //predictions.select("label", "features").show(5);
 
         // Select (prediction, true label) and compute test error.
         RegressionEvaluator evaluator = new RegressionEvaluator()
@@ -70,6 +69,7 @@ public class DecisionTreeRegression extends MLAlgorithmBase{
         .setMetricName("rmse");
         double rmse = evaluator.evaluate(predictions);
         System.out.println("Root Mean Squared Error (RMSE) on test data = " + rmse);
+        return rmse;
 
         //			    DecisionTreeRegressionModel treeModel =
         //			      (DecisionTreeRegressionModel) (model.stages()[1]);

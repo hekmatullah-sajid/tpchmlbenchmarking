@@ -18,7 +18,7 @@ public class NaiveBayesClassification extends MLAlgorithmBase{
     {
         super(spark);
     }
-    public void execute() {
+    public double execute() {
 //        SparkSession spark = SparkSession
 //                .builder()
 //                .appName("JavaNaiveBayesExample")
@@ -52,6 +52,7 @@ public class NaiveBayesClassification extends MLAlgorithmBase{
                 .setMetricName("accuracy");
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test set accuracy = " + accuracy);
+        return accuracy;
         // $example off$
 
         //spark.stop();

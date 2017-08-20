@@ -21,7 +21,7 @@ public class RandomForestClassification extends MLAlgorithmBase {
     {
         super(spark);
     }
-    public void execute() {
+    public double execute() {
 //        SparkSession spark = SparkSession
 //                .builder()
 //                .appName("JavaRandomForestClassifierExample")
@@ -84,7 +84,7 @@ public class RandomForestClassification extends MLAlgorithmBase {
                 .setMetricName("accuracy");
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test Error = " + (1.0 - accuracy));
-
+        return (1.0 - accuracy);
 //        RandomForestClassificationModel rfModel = (RandomForestClassificationModel)(model.stages()[2]);
 //        System.out.println("Learned classification forest model:\n" + rfModel.toDebugString());
 //        // $example off$

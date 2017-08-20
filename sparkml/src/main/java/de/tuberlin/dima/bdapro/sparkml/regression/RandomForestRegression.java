@@ -8,7 +8,6 @@ import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.evaluation.RegressionEvaluator;
 import org.apache.spark.ml.feature.VectorIndexer;
 import org.apache.spark.ml.feature.VectorIndexerModel;
-import org.apache.spark.ml.regression.RandomForestRegressionModel;
 import org.apache.spark.ml.regression.RandomForestRegressor;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -20,7 +19,7 @@ public class RandomForestRegression extends MLAlgorithmBase{
 		super(spark);
 	}
 
-	public void execute() {
+	public double execute() {
 
 //		SparkSession spark = SparkSession
 //			      .builder()
@@ -41,7 +40,7 @@ public class RandomForestRegression extends MLAlgorithmBase{
 		  .setMaxCategories(4)
 		  .fit(data);
 
-		// Split the data into training and test sets (20% held out for testing)
+		// Split the data into training and test sets (80% training and 20% held for testing).
 		Dataset<Row>[] splits = data.randomSplit(new double[] {0.8, 0.2});
 		Dataset<Row> trainingData = splits[0];
 		Dataset<Row> testData = splits[1];
@@ -71,6 +70,7 @@ public class RandomForestRegression extends MLAlgorithmBase{
 		  .setMetricName("rmse");
 		double rmse = evaluator.evaluate(predictions);
 		System.out.println("Root Mean Squared Error (RMSE) on test data = " + rmse);
+		return rmse;
 
 		//			    RandomForestRegressionModel rfModel = (RandomForestRegressionModel)(model.stages()[1]);
 		//			    System.out.println("Learned regression forest model:\n" + rfModel.toDebugString());

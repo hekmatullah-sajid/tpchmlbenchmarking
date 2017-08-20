@@ -69,7 +69,7 @@ public class ALSRating extends MLAlgorithmBase{
 }
     // $example off$
 
-    public void execute() {
+    public double execute() {
 //        SparkSession spark = SparkSession
 //                .builder()
 //                .appName("JavaALSExample")
@@ -106,7 +106,7 @@ public class ALSRating extends MLAlgorithmBase{
                 .setPredictionCol("prediction");
         Double rmse = evaluator.evaluate(predictions);
         System.out.println("Root-mean-square error = " + rmse);
-
+        return rmse;
         // Generate top 10 movie recommendations for each user
         //Dataset<Row> userRecs = model.recommendForAllUsers(10);
         // Generate top 10 user recommendations for each movie

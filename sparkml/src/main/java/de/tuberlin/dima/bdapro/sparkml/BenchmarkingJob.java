@@ -40,73 +40,77 @@ public class BenchmarkingJob {
 
         //Benchmarking ML Algorithms runtime and error rate
         SparkSession spark = SparkSession.builder()
-                .appName("ML Spark Batch Benchmarking").config("spark.master", "local").getOrCreate();
+                .appName("ML Spark Batch Benchmarking").getOrCreate(); //config("spark.master", "local")
         Config.SetBaseDir(path);
 
         // Variables to store Benchmarking intermediate and final values
         List<String> results = new ArrayList<String>();
         long start = 0;
         long end = 0;
+        double accuracy = 0;
+        //Start collecting the outpur
+        results.add(" Algorithm, execution time, accuracy\r\n");
 
+        
         start = System.currentTimeMillis();
         final DecisionTreeClassification dtClassification = new DecisionTreeClassification(spark);
-        dtClassification.execute();
+        accuracy = dtClassification.execute();
         end = System.currentTimeMillis();
-        results.add(" DecisionTreeClassification|" + (end - start) + "\r\n");
+        results.add(" DecisionTreeClassification," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final GradientBoostedTreeClassification gbtClassification = new GradientBoostedTreeClassification(spark);
-        gbtClassification.execute();
+        accuracy = gbtClassification.execute();
         end = System.currentTimeMillis();
-        results.add(" GradientBoostedTreeClassification|" + (end - start) + "\r\n");
+        results.add(" GradientBoostedTreeClassification," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final NaiveBayesClassification nbClassification = new NaiveBayesClassification(spark);
-        nbClassification.execute();
+        accuracy = nbClassification.execute();
         end = System.currentTimeMillis();
-        results.add(" NaiveBayesClassification|" + (end - start) + "\r\n");
+        results.add(" NaiveBayesClassification," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final RandomForestClassification rfClassification = new RandomForestClassification(spark);
-        rfClassification.execute();
+        accuracy = rfClassification.execute();
         end = System.currentTimeMillis();
-        results.add(" RandomForestClassification|" + (end - start) + "\r\n");
+        results.add(" RandomForestClassification," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final SVMClassification svmClassification = new SVMClassification(spark);
-        svmClassification.execute();
+        accuracy = svmClassification.execute();
         end = System.currentTimeMillis();
-        results.add(" SVMClassification|" + (end - start) + "\r\n");
+        results.add(" SVMClassification," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final KMeansClustering kmeansClustering = new KMeansClustering(spark);
-        kmeansClustering.execute();
+        accuracy = kmeansClustering.execute();
         end = System.currentTimeMillis();
-        results.add(" KMeansClustering|" + (end - start) + "\r\n");
+        results.add(" KMeansClustering," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final ALSRating alsRating = new ALSRating(spark);
-        alsRating.execute();
+        accuracy = alsRating.execute();
         end = System.currentTimeMillis();
-        results.add(" ALSRating|" + (end - start) + "\r\n");
+        results.add(" ALSRating," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final DecisionTreeRegression dtRegression = new DecisionTreeRegression(spark);
-        dtRegression.execute();
+        accuracy = dtRegression.execute();
         end = System.currentTimeMillis();
-        results.add(" DecisionTreeRegression|" + (end - start) + "\r\n");
+        results.add(" DecisionTreeRegression," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final GeneralizedLinearRegression glRegression = new GeneralizedLinearRegression(spark);
-        glRegression.execute();
+        accuracy = glRegression.execute();
         end = System.currentTimeMillis();
-        results.add(" GeneralizedLinearRegression|" + (end - start) + "\r\n");
+        results.add(" GeneralizedLinearRegression," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final RandomForestRegression rfRegression = new RandomForestRegression(spark);
-        rfRegression.execute();
+        accuracy = rfRegression.execute();
         end = System.currentTimeMillis();
-        results.add(" RandomForestRegression|" + (end - start) + "\r\n");
+        results.add(" RandomForestRegression," + (end - start) + "," + accuracy + "\r\n");
 
 
         //write the output to a file

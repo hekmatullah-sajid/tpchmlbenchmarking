@@ -22,7 +22,7 @@ public class GradientBoostedTreeClassification extends MLAlgorithmBase{
     {
         super(spark);
     }
-    public void execute() {
+    public double execute() {
 //        SparkSession spark = SparkSession
 //                .builder()
 //                .appName("JavaGradientBoostedTreeClassifierExample")
@@ -88,7 +88,7 @@ public class GradientBoostedTreeClassification extends MLAlgorithmBase{
                 .setMetricName("accuracy");
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Test Error = " + (1.0 - accuracy));
-
+        return (1.0 - accuracy);
 //        GBTClassificationModel gbtModel = (GBTClassificationModel)(model.stages()[2]);
 //        System.out.println("Learned classification GBT model:\n" + gbtModel.toDebugString());
 
