@@ -27,7 +27,7 @@ public class NaiveBayesClassification extends MLAlgorithmBase{
 
         // $example on$
         // Load training data
-        String inputfile = Config.pathToClassificationTrainingSet();
+        String inputfile = Config.pathToNaiveBayesClassificationTrainingSet();
         Dataset<Row> dataFrame =
                 spark.read().format("libsvm").load(inputfile).cache();
         // Split the data into train and test

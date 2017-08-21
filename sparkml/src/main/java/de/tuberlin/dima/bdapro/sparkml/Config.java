@@ -14,6 +14,10 @@ public class Config {
 	public static String pathToClassificationTrainingSet() {
 		return PARENT_DIR + "/classification.data";
 	}
+	
+	public static String pathToNaiveBayesClassificationTrainingSet() {
+		return PARENT_DIR + "/naivenayes.data";
+	}
 
 	public static String pathToRecommendationTrainingSet() {
 		return PARENT_DIR + "/recommendation.data";

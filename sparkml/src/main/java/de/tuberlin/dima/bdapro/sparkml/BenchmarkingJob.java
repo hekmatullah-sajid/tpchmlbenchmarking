@@ -2,7 +2,6 @@ package de.tuberlin.dima.bdapro.sparkml;
 
 import de.tuberlin.dima.bdapro.sparkml.classification.*;
 import de.tuberlin.dima.bdapro.sparkml.clustering.KMeansClustering;
-import de.tuberlin.dima.bdapro.sparkml.recommendation.ALSRating;
 import de.tuberlin.dima.bdapro.sparkml.regression.DecisionTreeRegression;
 import de.tuberlin.dima.bdapro.sparkml.regression.GeneralizedLinearRegression;
 import de.tuberlin.dima.bdapro.sparkml.regression.RandomForestRegression;
@@ -76,11 +75,11 @@ public class BenchmarkingJob {
         end = System.currentTimeMillis();
         results.add(" RandomForestClassification," + (end - start) + "," + accuracy + "\r\n");
 
-        start = System.currentTimeMillis();
-        final SVMClassification svmClassification = new SVMClassification(spark);
-        accuracy = svmClassification.execute();
-        end = System.currentTimeMillis();
-        results.add(" SVMClassification," + (end - start) + "," + accuracy + "\r\n");
+//        start = System.currentTimeMillis();
+//        final SVMClassification svmClassification = new SVMClassification(spark);
+//        accuracy = svmClassification.execute();
+//        end = System.currentTimeMillis();
+//        results.add(" SVMClassification," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final KMeansClustering kmeansClustering = new KMeansClustering(spark);
@@ -88,11 +87,11 @@ public class BenchmarkingJob {
         end = System.currentTimeMillis();
         results.add(" KMeansClustering," + (end - start) + "," + accuracy + "\r\n");
 
-        start = System.currentTimeMillis();
-        final ALSRating alsRating = new ALSRating(spark);
-        accuracy = alsRating.execute();
-        end = System.currentTimeMillis();
-        results.add(" ALSRating," + (end - start) + "," + accuracy + "\r\n");
+//        start = System.currentTimeMillis();
+//        final ALSRating alsRating = new ALSRating(spark);
+//        accuracy = alsRating.execute();
+//        end = System.currentTimeMillis();
+//        results.add(" ALSRating," + (end - start) + "," + accuracy + "\r\n");
 
         start = System.currentTimeMillis();
         final DecisionTreeRegression dtRegression = new DecisionTreeRegression(spark);
@@ -115,7 +114,7 @@ public class BenchmarkingJob {
 
         //write the output to a file
         try {
-            FileWriter writer = new FileWriter("SparkMLOutput.txt", true);
+            FileWriter writer = new FileWriter("SparkMLOutput-Cluster.txt", true);
             for (String str : results) {
                 writer.write(str);
             }
