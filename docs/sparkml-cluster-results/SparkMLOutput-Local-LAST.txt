@@ -1,0 +1,14 @@
+ Algorithm, execution time, accuracy
+ RandomForestRegression,3526917,0.3905892692384792
+ Algorithm, execution time, accuracy
+ RandomForestRegression,3466310,0.3760465600875402
+ Algorithm, execution time, accuracy
+ RandomForestRegression,3952973,0.3853428774149381
+ Algorithm, execution time, accuracy
+ DecisionTreeRegression,1191938,0.3961038747919854
+ Algorithm, execution time, accuracy
+ DecisionTreeRegression,1124554,0.39599299534794696
+ Algorithm, execution time, accuracy
+ DecisionTreeRegression,1125229,0.4386522094000779
+ Algorithm, execution time, accuracy
+ DecisionTreeRegression,1103029,0.4151039092434357

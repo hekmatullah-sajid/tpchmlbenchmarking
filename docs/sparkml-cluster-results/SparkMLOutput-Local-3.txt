@@ -1,0 +1,16 @@
+ Algorithm, execution time, accuracy
+ SVMClassification,227691,0.5856298181818181
+ Algorithm, execution time, accuracy
+ SVMClassification,208511,0.5856298181818181
+ Algorithm, execution time, accuracy
+ SVMClassification,182938,0.5856298181818181
+ Algorithm, execution time, accuracy
+ SVMClassification,182528,0.5856298181818181
+ Algorithm, execution time, accuracy
+ SVMClassification,187404,0.5856298181818181
+ Algorithm, execution time, accuracy
+ ALSRating,93085,0.8107381132559983
+ Algorithm, execution time, accuracy
+ ALSRating,90528,0.811195167158624
+ Algorithm, execution time, accuracy
+ ALSRating,92102,0.8132657034986799

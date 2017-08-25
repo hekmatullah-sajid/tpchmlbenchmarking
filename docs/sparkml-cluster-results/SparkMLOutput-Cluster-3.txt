@@ -1,0 +1,6 @@
+ Algorithm, execution time, accuracy
+ SVMClassification,125395,0.5856298181818181
+ Algorithm, execution time, accuracy
+ SVMClassification,172899,0.5856298181818181
+ Algorithm, execution time, accuracy
+ SVMClassification,139146,0.5856298181818181

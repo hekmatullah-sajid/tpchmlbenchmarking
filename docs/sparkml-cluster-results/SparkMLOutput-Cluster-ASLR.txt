@@ -1,0 +1,6 @@
+ Algorithm, execution time, accuracy
+ ALSRating,71755,0.8125213135915916
+ Algorithm, execution time, accuracy
+ ALSRating,72992,0.8129413141885832
+ Algorithm, execution time, accuracy
+ ALSRating,79910,0.8126142585280107

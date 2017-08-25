@@ -1,0 +1,62 @@
+ Algorithm, execution time, accuracy
+ DecisionTreeClassification,190799,0.33552698758316346
+ Algorithm, execution time, accuracy
+ DecisionTreeClassification,231354,0.33650208443871754
+ Algorithm, execution time, accuracy
+ DecisionTreeClassification,199685,0.3360570764476901
+ Algorithm, execution time, accuracy
+ DecisionTreeClassification,196730,0.3363517554653853
+ Algorithm, execution time, accuracy
+ DecisionTreeClassification,217443,0.3366668121937111
+ Algorithm, execution time, accuracy
+ GradientBoostedTreeClassification,347554,0.30416988613689044
+ Algorithm, execution time, accuracy
+ GradientBoostedTreeClassification,322566,0.3035252598709429
+ Algorithm, execution time, accuracy
+ GradientBoostedTreeClassification,363712,0.3040389455135538
+ Algorithm, execution time, accuracy
+ GradientBoostedTreeClassification,330086,0.30391048790346775
+ Algorithm, execution time, accuracy
+ GradientBoostedTreeClassification,367450,0.30440292616624975
+ Algorithm, execution time, accuracy
+ NaiveBayesClassification,166575,0.8626350859539677
+ Algorithm, execution time, accuracy
+ NaiveBayesClassification,132191,0.8626350859539677
+ Algorithm, execution time, accuracy
+ NaiveBayesClassification,163021,0.8626350859539677
+ Algorithm, execution time, accuracy
+ NaiveBayesClassification,169675,0.8626350859539677
+ Algorithm, execution time, accuracy
+ NaiveBayesClassification,153185,0.8626350859539677
+ Algorithm, execution time, accuracy
+ RandomForestClassification,259805,0.3325022987139332
+ Algorithm, execution time, accuracy
+ RandomForestClassification,260197,0.3326665019545667
+ Algorithm, execution time, accuracy
+ RandomForestClassification,261854,0.3331299702286108
+ Algorithm, execution time, accuracy
+ RandomForestClassification,259763,0.3329236776250074
+ Algorithm, execution time, accuracy
+ RandomForestClassification,244897,0.3330596566645876
+ Algorithm, execution time, accuracy
+ KMeansClustering,517426,1.120542346547177E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,505817,1.1205423465471767E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,481858,1.1205423465471765E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,1376332,1.1205423465471768E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,816507,1.120542346547177E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,838831,1.1205423465471767E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,779479,1.1205423465471768E8
+ Algorithm, execution time, accuracy
+ KMeansClustering,719190,1.1205423465471768E8
+ Algorithm, execution time, accuracy
+ GeneralizedLinearRegression,67493,0.45906295332261404
+ Algorithm, execution time, accuracy
+ GeneralizedLinearRegression,72203,0.45238256305072866
+ Algorithm, execution time, accuracy
+ GeneralizedLinearRegression,85615,0.4541082886074198
