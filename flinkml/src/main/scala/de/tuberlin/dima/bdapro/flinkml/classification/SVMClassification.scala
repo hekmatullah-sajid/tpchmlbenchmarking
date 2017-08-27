@@ -1,4 +1,4 @@
-package scala.de.tuberlin.dima.bdapro.flinkml.classification
+package de.tuberlin.dima.bdapro.flinkml.classification
 
 import de.tuberlin.dima.bdapro.flinkml.Config
 import org.apache.flink.api.scala._
@@ -9,19 +9,18 @@ import org.apache.flink.ml.common.LabeledVector
 /**
   * Created by seema on 13.08.17.
   */
-class SVMClassification(val env : ExecutionEnvironment) {
-  val localenv: ExecutionEnvironment = env
+class SVMClassification(val envPassed : ExecutionEnvironment) {
+  val env = envPassed
 
-  def execute() {
+  def execute() : Double = {
 
 //    val params: ParameterTool = ParameterTool.fromArgs(args)
 //    val env = ExecutionEnvironment.getExecutionEnvironment
 //    env.getConfig.setGlobalJobParameters(params)
 
-    val pathToTrainingFile = Config.pathToClassificationTrainingSet
-    val pathToTestingFile = Config.pathToClassificationTrainingSet
+    val pathToDataset = Config.pathToClassificationTrainingSet
     // Read the training data set, from a LibSVM formatted file
-    val trainingDS: DataSet[LabeledVector] = localenv.readLibSVM(pathToTrainingFile)
+    val trainingDS: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
     // Create the SVM learner
     val svm = SVM()
@@ -30,7 +29,7 @@ class SVMClassification(val env : ExecutionEnvironment) {
     // Learn the SVM model
     svm.fit(trainingDS)
     // Read the testing data set
-    val testingDS: DataSet[LabeledVector] = env.readLibSVM(pathToTestingFile)
+    val testingDS: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
     val evaluationDS: DataSet[(Double, Double)] = svm.evaluate(testingDS.map(x => (x.vector, x.label)))
     //evaluationDS.print()
 
@@ -38,7 +37,7 @@ class SVMClassification(val env : ExecutionEnvironment) {
     val accuracy = evaluationDS .collect().map{
       case (pred, label) => if (pred == label) 1.0 else 0.0}.sum
 
-    print(accuracy * 100.0 / count )
+    return (accuracy * 100.0 / count )
 
   }
 

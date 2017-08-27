@@ -9,16 +9,16 @@ import org.apache.flink.ml.common.LabeledVector
 import org.apache.flink.ml.preprocessing.Splitter
 import org.apache.flink.ml.regression.MultipleLinearRegression
 import org.apache.flink.ml.preprocessing.Splitter.TrainTestDataSet
+import de.tuberlin.dima.bdapro.flinkml.Config
 
 import org.apache.flink.ml.math.Vector
 
-object MLRegression {
-  def main(args: Array[String]) = {
+class MLRegression(val envPassed: ExecutionEnvironment) {
+  def execute(): Double = {
 
-    System.out.println("Hello World")
-    val env = ExecutionEnvironment.getExecutionEnvironment
-
-    val dataSet: DataSet[LabeledVector] = env.readLibSVM("C:\\100lines.txt")
+    val env = envPassed
+    val pathToDataset = Config.pathToRegressionTrainingSet
+    val dataSet: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
     val trainTestData = Splitter.trainTestSplit(dataSet, 0.8, true)
     val trainingData: DataSet[LabeledVector] = trainTestData.training
@@ -62,9 +62,8 @@ object MLRegression {
         val err = rating - prediction
         err * err
     }.sum
+    val accuracy = math.sqrt(mse / count)
+    return accuracy
 
-    print(math.sqrt(mse / count))
-
-    System.out.println("Hello World")
   }
 }

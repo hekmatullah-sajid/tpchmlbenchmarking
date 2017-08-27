@@ -9,13 +9,14 @@ import org.apache.flink.ml.MLUtils.readLibSVM
 import org.apache.flink.ml.common.LabeledVector
 import org.apache.flink.ml.RichExecutionEnvironment
 import org.apache.flink.ml.preprocessing.Splitter
+import de.tuberlin.dima.bdapro.flinkml.Config
 
-object KNearestNeighbors {
-  def main(args: Array[String]) = {
-    System.out.println("KNN Execution Started")
-    val env = ExecutionEnvironment.getExecutionEnvironment
 
-    val dataSet: DataSet[LabeledVector] = env.readLibSVM("C:\\higgs100line.txt")
+class KNearestNeighbors(val envPassed : ExecutionEnvironment) {
+  def execute() : Double = {
+    val env = envPassed
+    val pathToDataset = Config.pathToClusteringTrainingSet
+    val dataSet: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
     val trainTestData = Splitter.trainTestSplit(dataSet, 0.95, true)
     val trainingData: DataSet[Vector] = trainTestData.training.map(lv => lv.vector)
@@ -33,7 +34,7 @@ object KNearestNeighbors {
     // run knn join
     knn.fit(trainingData)
     val result = knn.predict(testingData)
-    result.print()
+    //result.print()
     
     
     
@@ -48,7 +49,6 @@ object KNearestNeighbors {
 
 //    print(math.sqrt(mse / count))
     
-    System.out.println("KNN Execution Finished")
-
+  return 1.0
   }
 }
