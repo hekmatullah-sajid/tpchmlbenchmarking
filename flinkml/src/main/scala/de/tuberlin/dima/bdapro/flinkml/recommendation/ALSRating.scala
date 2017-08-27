@@ -24,7 +24,7 @@ class ALSRating (val envPassed : ExecutionEnvironment) {
       val inputDS: DataSet[(Int, Int, Double)] = env
         .readCsvFile[(Int, Int, Double)](pathToDataset, ignoreFirstLine = true)
         
-      val trainTestData = Splitter.trainTestSplit(inputDS, 0.8, true)
+      //val trainTestData = Splitter.trainTestSplit(inputDS, 0.8, true)
 
 
       // Setup the ALS learner
@@ -39,11 +39,11 @@ class ALSRating (val envPassed : ExecutionEnvironment) {
         .add(ALS.Seed, 42L)
 
       // Calculate the factorization
-      als.fit(trainTestData.training, parameters)
+      als.fit(inputDS, parameters)//als.fit(trainTestData.training, parameters)
 
       // ********* For Testing the model *************** //
       // Read the testing data set from a csv file
-      val testingDS: DataSet[(Int, Int,Double)] = trainTestData.testing
+      val testingDS: DataSet[(Int, Int,Double)] = inputDS //trainTestData.testing
 
       // Calculate the ratings according to the matrix factorization
       val predictedRatings = als.predict(testingDS.map(x => (x._1, x._2)))
@@ -56,8 +56,9 @@ class ALSRating (val envPassed : ExecutionEnvironment) {
         case (rating, prediction) =>
           val err = rating - prediction
           err * err }.sum
-
-      return (math.sqrt(mse/count))
+          
+     var acc =  math.sqrt(mse/count)
+     return (acc)
 
 
   }

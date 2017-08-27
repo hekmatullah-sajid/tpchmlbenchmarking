@@ -13,49 +13,60 @@ object BenchmarkingJob {
 
   def main(args: Array[String]): Unit = {
     
-    val results: List[String] = List("FlinkML Accuracy and Execution Time Results \n")
-    val start : Long = 0
-    val end : Long = 0
-    val accuracy : Double = 0
-    
     Config.PARENT_DIR = args(0)
-    
+      
     val algo = args(1)
-    val mode = args(2)
-    val test =  Config.PARENT_DIR
-    val test2 =  Config.pathToClassificationTrainingSet
-    
-    System.out.println(test + "-----" + test2)
+    val mode = args(2)   
     val env = ExecutionEnvironment.getExecutionEnvironment
     
-    if(algo == "all" | algo == "MLR"){
-      val regression = new MLRegression(env)
-      print("Hi")
-      val MLRAccuracy = regression.execute()
-    }
+    var start : Long = 0
+    var end : Long = 0
+    var exeTime: Long = 0
+    var accuracy : Double = 0
     
-//    if(algo == "all" | algo == "KNN"){
-//      val clusterling = new KNearestNeighbors(env)
-//      val KNNAccuracy = clusterling.execute()
-//    }
-    
-    if(algo == "all" | algo == "SVM"){
-      val classification = new SVMClassification(env)
-      val SVMAccuracy = classification.execute()
-    }
-    
-    if(algo == "all" | algo == "ALS"){
-      val recommendation = new ALSRating(env)
-      val ALSAccuracy = recommendation.execute()
-    }
     try {
       val file = new File("FlinkMLOutput-" + mode + ".txt")
-      val bw = new BufferedWriter(new FileWriter(file))
-      for (line <- results) {
-        bw.write(line)
+      val bw = new FileWriter(file, true)
+      bw.write("FlinkML Accuracy and Execution Time Results \n")
+      if(algo == "all" | algo == "MLR"){
+        start = System.currentTimeMillis()
+        val regression = new MLRegression(env)
+        val MLRAccuracy = regression.execute()
+        end = System.currentTimeMillis()
+        exeTime = (end - start)
+        bw.write("MultipleLinearRegression, " + ", " + exeTime + ", " + MLRAccuracy + "\n")
+      }
+      
+  //    if(algo == "all" | algo == "KNN"){
+          start = System.currentTimeMillis()
+  //      val clusterling = new KNearestNeighbors(env)
+  //      val KNNAccuracy = clusterling.execute()
+  //      end = System.currentTimeMillis()
+  //      exeTime = (end - start)
+  //      bw.write("MultipleLinearRegression, " + ", " + exeTime + ", " + KNNAccuracy + "\n")
+  //    }
+      
+      if(algo == "all" | algo == "SVM"){
+        start = System.currentTimeMillis()
+        val classification = new SVMClassification(env)
+        val SVMAccuracy = classification.execute()
+        end = System.currentTimeMillis()
+        exeTime = (end - start)
+        bw.write("SVMClassification, "  + exeTime + ", " + SVMAccuracy + "\n")
+      }
+      
+      if(algo == "all" | algo == "ALS"){
+        start = System.currentTimeMillis()
+        val recommendation = new ALSRating(env)
+        val ALSAccuracy = recommendation.execute()
+        end = System.currentTimeMillis()
+        exeTime = (end - start)
+         bw.write("ALSRating, " + exeTime + ", " + ALSAccuracy + "\n")
       }
       bw.close()
-		}
+  
+      
+  		}
      catch {
          case ex: FileNotFoundException =>{
             println("Missing file exception")
