@@ -1,0 +1,9 @@
+KNearestNeighbors, , 35619, 1.0
+FlinkML Accuracy and Execution Time Results 
+KNearestNeighbors, , 40984, 1.0
+FlinkML Accuracy and Execution Time Results 
+KNearestNeighbors, , 40138, 1.0
+FlinkML Accuracy and Execution Time Results 
+KNearestNeighbors, , 36286, 1.0
+FlinkML Accuracy and Execution Time Results 
+KNearestNeighbors, , 36886, 1.0
