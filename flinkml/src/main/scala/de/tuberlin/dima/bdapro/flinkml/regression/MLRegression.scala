@@ -37,33 +37,22 @@ class MLRegression(val envPassed: ExecutionEnvironment) {
 
     mlr.fit(trainingData)
 
-    //    val count = evaluationDS.count()
-    //    val accuracy = evaluationDS.collect().map {
-    //      case (pred, label) => if (pred == label) 1.0 else 0.0
-    //    }.sum
-    //    System.out.println(accuracy)
-    //    System.out.println(accuracy * 100.0 / count)
 
     // The fitted model can now be used to make predictions
-    val predictions: DataSet[(Vector, Double)] = mlr.predict(testingData)
-    //    val count = predictions.count()
-    //   // predections.accuracy()
-    //    val accuracy = predictions.collect().map{
-    //        pair => if (pair._1.lable == pair._2) 1.0 else 0.0
-    //        }.sum
-    //
-    //    print(accuracy)
+    //  val predictions: DataSet[(Vector, Double)] = mlr.predict(testingData)
+
 
     val evaluationDS: DataSet[(Double, Double)] = mlr.evaluate(trainTestData.testing.map(x => (x.vector, x.label)))
 
-    val count = evaluationDS.count()
-    val mse = evaluationDS.collect().map {
-      case (rating, prediction) =>
-        val err = rating - prediction
-        err * err
-    }.sum
-    val accuracy = math.sqrt(mse / count)
-    return accuracy
+//    val count = evaluationDS.count()
+//    val mse = evaluationDS.collect().map {
+//      case (label, prediction) =>
+//        val err = label - prediction
+//        err * err
+//    }.sum
+//    val accuracy = math.sqrt(mse / count)
+//    return accuracy
+    return 10
 
   }
 }
