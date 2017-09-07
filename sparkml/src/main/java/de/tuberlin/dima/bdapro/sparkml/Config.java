@@ -12,23 +12,23 @@ public class Config {
 	}
 
 	public static String pathToClassificationTrainingSet() {
-		return PARENT_DIR + "/classification.data";
+		return PARENT_DIR + "classification.data";
 	}
 	
 	public static String pathToNaiveBayesClassificationTrainingSet() {
-		return PARENT_DIR + "/naivenayes.data";
+		return PARENT_DIR + "naivenayes.data";
 	}
 
 	public static String pathToRecommendationTrainingSet() {
-		return PARENT_DIR + "/recommendation.data";
+		return PARENT_DIR + "recommendation.data";
 	}
 
 	public static String pathToClusteringTrainingSet() {
-		return PARENT_DIR + "/classification.data";
+		return PARENT_DIR + "classification.data";
 	}
 
 	public static String pathToRegressionTrainingSet() {
-		return PARENT_DIR + "/regression.data";
+		return PARENT_DIR + "regression.data";
 	}
 
 }

@@ -18,15 +18,13 @@ class KNearestNeighbors(val envPassed : ExecutionEnvironment) {
     val pathToDataset = Config.pathToClusteringTrainingSet
     val dataSet: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
-    val trainTestData = Splitter.trainTestSplit(dataSet, 0.95, true)
+    val trainTestData = Splitter.trainTestSplit(dataSet, 0.8, true)
     val trainingData: DataSet[Vector] = trainTestData.training.map(lv => lv.vector)
     val testingData: DataSet[Vector] = trainTestData.testing.map(lv => lv.vector)
-    testingData.print()
-    System.out.println("End of test data")
 
     val knn = KNN()
       .setK(10)
-      .setBlocks(2)
+      .setBlocks(48)
       .setDistanceMetric(SquaredEuclideanDistanceMetric())
       .setUseQuadTree(false)
       .setSizeHint(CrossHint.SECOND_IS_SMALL)

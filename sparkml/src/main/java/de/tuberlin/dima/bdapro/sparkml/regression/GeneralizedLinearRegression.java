@@ -3,7 +3,6 @@ package de.tuberlin.dima.bdapro.sparkml.regression;
 import de.tuberlin.dima.bdapro.sparkml.Config;
 import de.tuberlin.dima.bdapro.sparkml.MLAlgorithmBase;
 
-import org.apache.spark.ml.linalg.Vector;
 import org.apache.spark.ml.regression.LinearRegression;
 import org.apache.spark.ml.regression.LinearRegressionModel;
 import org.apache.spark.ml.regression.LinearRegressionTrainingSummary;
@@ -35,23 +34,25 @@ public class GeneralizedLinearRegression extends MLAlgorithmBase {
 
 		
 		// Split the data into training and test sets (80% training and 20% held for testing).
-        Dataset<Row>[] splits = data.randomSplit(new double[]{0.7, 0.3});
+        Dataset<Row>[] splits = data.randomSplit(new double[]{0.8, 0.2});
         Dataset<Row> trainingData = splits[0];
         Dataset<Row> testData = splits[1];
         
         // Fit the model.
      	LinearRegressionModel lrModel = lr.fit(trainingData);
      	
-     	lrModel.predict((Vector) testData);
+     	// Predict the testData
+     	lrModel.transform(testData);
 		// Print the coefficients and intercept for linear regression.
-		System.out.println("Coefficients: "
-		  + lrModel.coefficients() + " Intercept: " + lrModel.intercept());
-
-		// Summarize the model over the training set and print out some metrics.
+//		System.out.println("Coefficients: "
+//		  + lrModel.coefficients() + " Intercept: " + lrModel.intercept());
+//
+//		// Summarize the model over the training set and print out some metrics.
 		LinearRegressionTrainingSummary trainingSummary = lrModel.summary();
 		trainingSummary.residuals();
 		System.out.println("RMSE: " + trainingSummary.rootMeanSquaredError());
 		return trainingSummary.rootMeanSquaredError();
+//     	return 1.0;
 		//				System.out.println("r2: " + trainingSummary.r2());
 		//
 		//			    spark.stop();

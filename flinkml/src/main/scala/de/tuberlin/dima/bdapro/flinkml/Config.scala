@@ -11,12 +11,12 @@ object Config {
       PARENT_DIR = path
    }
   
-  def pathToClassificationTrainingSet:String =  PARENT_DIR + "/classification.data"
+  def pathToClassificationTrainingSet:String =  PARENT_DIR + "classification.data"
 
-  def pathToRecommendationTrainingSet:String = PARENT_DIR + "/recommendation.data"
+  def pathToRecommendationTrainingSet:String = PARENT_DIR + "recommendation.data"
 
-  def pathToRegressionTrainingSet:String = PARENT_DIR + "/regression.data"
+  def pathToRegressionTrainingSet:String = PARENT_DIR + "regression.data"
 
-  def pathToClusteringTrainingSet:String = PARENT_DIR + "/classification.data"
+  def pathToClusteringTrainingSet:String = PARENT_DIR + "classification.data"
 
 }

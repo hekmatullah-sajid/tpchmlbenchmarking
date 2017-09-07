@@ -30,7 +30,7 @@ public class DecisionTreeRegression extends MLAlgorithmBase{
         // Load the data stored in LIBSVM format as a DataFrame.
         String inputfile = Config.pathToRegressionTrainingSet();
         Dataset<Row> data = spark.read().format("libsvm")
-          .load(inputfile).cache();
+          .load(inputfile);
 
         // Automatically identify categorical features, and index them.
         // Set maxCategories so features with > 4 distinct values are treated as continuous.
