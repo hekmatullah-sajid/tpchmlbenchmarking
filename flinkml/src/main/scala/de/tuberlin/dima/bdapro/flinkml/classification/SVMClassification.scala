@@ -38,15 +38,12 @@ class SVMClassification(val envPassed : ExecutionEnvironment) {
     // Read the testing data set
     //val testingDS: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
     val evaluationDS: DataSet[(Double, Double)] = svm.evaluate(testingData.map(x => (x.vector, x.label)))
-    //evaluationDS.print()
 
-    //val count = evaluationDS.count()
-//    val accuracy = evaluationDS .collect().map{
-//      case (pred, label) => if (pred == label) 1.0 else 0.0}
+    val squaredError: DataSet[Double] = evaluationDS.map((tuple: (Double, Double)) => (if (tuple._1 == tuple._2) 1.0 else 0.0, 1))
+      .reduce((tuple: (Double, Int), tuple0: (Double, Int)) => (tuple._1 + tuple0._1, tuple._2 + tuple0._2))
+      .map(tuple => (math.sqrt(tuple._1 / tuple._2)))
 
-    //return accuracy/count
-
-    return 10
+    return squaredError.collect().last
 
   }
 

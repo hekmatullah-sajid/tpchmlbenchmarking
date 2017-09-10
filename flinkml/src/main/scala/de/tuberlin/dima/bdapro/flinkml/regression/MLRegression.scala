@@ -1,5 +1,6 @@
 package de.tuberlin.dima.bdapro.flinkml.regression
 
+import org.apache.flink.api.java.io.CsvOutputFormat
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.api.scala._
 import org.apache.flink.ml.RichExecutionEnvironment
@@ -17,6 +18,9 @@ class MLRegression(val envPassed: ExecutionEnvironment) {
   def execute(): Double = {
 
     val env = envPassed
+
+
+
     val pathToDataset = Config.pathToRegressionTrainingSet
     val dataSet: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
@@ -37,22 +41,16 @@ class MLRegression(val envPassed: ExecutionEnvironment) {
 
     mlr.fit(trainingData)
 
-
     // The fitted model can now be used to make predictions
     //  val predictions: DataSet[(Vector, Double)] = mlr.predict(testingData)
 
 
     val evaluationDS: DataSet[(Double, Double)] = mlr.evaluate(trainTestData.testing.map(x => (x.vector, x.label)))
 
-//    val count = evaluationDS.count()
-//    val mse = evaluationDS.collect().map {
-//      case (label, prediction) =>
-//        val err = label - prediction
-//        err * err
-//    }.sum
-//    val accuracy = math.sqrt(mse / count)
-//    return accuracy
-    return 10
+    val rmse = evaluationDS.map((tuple: (Double, Double)) => ((tuple._1 - tuple._2) * (tuple._1 - tuple._2), 1))
+      .reduce((tuple: (Double, Int), tuple0: (Double, Int)) => (tuple._1 + tuple0._1, tuple._2 + tuple0._2))
+      .map(tuple => (math.sqrt(tuple._1 / tuple._2)))
 
+    return rmse.collect().last
   }
 }
