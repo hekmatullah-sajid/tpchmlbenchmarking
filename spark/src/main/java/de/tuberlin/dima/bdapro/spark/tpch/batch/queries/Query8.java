@@ -13,9 +13,14 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.api.java.UDF2;
 import org.apache.spark.sql.types.DataTypes;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
-import de.tuberlin.dima.bdapro.spark.tpch.Utils.Nation;
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils;
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils.Nation;
 
+/**
+ * National Market Share Query (Q8), TPC-H Benchmark Specification page 41 http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf). 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ *
+ */
 public class Query8 extends Query implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -27,12 +32,25 @@ public class Query8 extends Query implements Serializable{
 		super(spark);
 	}
 
+	/**
+	 * Find the random values and pass it to the execute method (with parameter).
+	 */
 	@Override
 	public List<Row> execute() {
 		Nation nation = Nation.getRandomNationAndRegion();
 		return execute(nation.getName(), nation.getRegion(), Utils.getRandomType());
 	}
 
+	/**
+	 * Executes Query8 of TPC-H and returns the result.
+	 * The CASE SQL control structure was not supported by Spark SQL (for more interpretation please check the query 8 SQL on TPC-H Benchmark Specification document page 41).
+	 * Spark could not generate logical plan for the given SQL.
+	 * For performing the unsupported SQL, UDFs are defined to get the query result using the combination of Spark SQL and DataFrame.
+	 * @param nation  is randomly selected within the list of Nation
+	 * @param region is randomly selected within the list of Regions
+	 * @param randomType is randomly selected from the lists TYPE_SYL1, TYPE_SYL2 and TYPE_SYL3.
+	 * @return result of the query
+	 */
 	public List<Row> execute(final String nation, final String region, final String randomType) {
 		spark.udf().register("volumeFilter", new UDF2<Double, String, Double>() {
 			private static final long serialVersionUID = 8504889569988140680L;

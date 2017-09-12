@@ -5,19 +5,32 @@ import java.util.List;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils;
 
+/**
+ * Returned Item Reporting Query (Q10), TPC-H Benchmark Specification page 45 http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf). 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ *
+ */
 public class Query10 extends Query {
 
 	public Query10(final SparkSession spark) {
 		super(spark);
 	}
 
+	/**
+	 * Find the random values and pass it to the execute method (with parameter).
+	 */
 	@Override
 	public List<Row> execute() {
 		return execute(getRandomDate());
 	}
 
+	/**
+	 * Executes Query10 of TPC-H and returns the result.
+	 * @param randomDate is the first day of a randomly selected month from the second month of 1993 to the first month of 1995.
+	 * @return the result of the query
+	 */
 	public List<Row> execute(final String randomDate) {
 		return spark.sql("select c_custkey, c_name, "
 				+ "sum(l_extendedprice * (1 - l_discount)) as revenue, "
@@ -33,6 +46,11 @@ public class Query10 extends Query {
 				+ "c_address, c_comment order by revenue desc").collectAsList();
 	}
 
+	/**
+	 * To execute the query a substitution parameter must be generated and used to build the executable query text.
+	 * The parameter to be randomly generated is randomDate which is the first day of a randomly selected month from the second month of 1993 to the first month of 1995.
+	 * @return a random date as specified.
+	 */
 	private String getRandomDate() {
 		int year = Utils.getRandomInt(1993, 1995);
 		int month = Utils.getRandomInt(1, 12);

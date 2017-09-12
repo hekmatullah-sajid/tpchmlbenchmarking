@@ -12,8 +12,13 @@ import org.apache.spark.sql.api.java.UDF1;
 import org.apache.spark.sql.api.java.UDF2;
 import org.apache.spark.sql.types.DataTypes;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils.Nation;
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils.Nation;
 
+/**
+ * Volume Shipping Query (Q7), TPC-H Benchmark Specification page 39 http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf). 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ *
+ */
 public class Query7 extends Query implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -25,12 +30,23 @@ public class Query7 extends Query implements Serializable {
 		super(spark);
 	}
 
+	/**
+	 * Find the random values and pass it to the execute method (with parameter).
+	 */
 	@Override
 	public List<Row> execute() {
 		String[] randNations = getTwoRandomNations();
 		return execute(randNations[0], randNations[1]);
 	}
 
+	/**
+	 * Execute Query7 of TPC-H and returns the result.
+	 * The direct SQL and the SQL functions in the query (extract(year from l_shipdate) AND l_extendedprice * (1 - l_discount)) were not supported by Spark SQL.
+	 * The query is executed using Spark DataFrame to get the result.
+	 * @param nation1 is randomly selected within the list of values defined in enum Nation.
+	 * @param nation2 is randomly selected within the list of values defined in enum Nation, and should be different from the nation1.
+	 * @return the result of the query
+	 */
 	public List<Row> execute(final String nation1, final String nation2) {
 		spark.udf().register("volume", new UDF2<Double, Double, Double>() {
 			private static final long serialVersionUID = 8504889569988140680L;
@@ -75,27 +91,12 @@ public class Query7 extends Query implements Serializable {
 				.orderBy("supp_nation", "cust_nation", "l_year")
 				.groupBy("supp_nation", "cust_nation", "l_year").sum("volume")
 				.collectAsList();
-
-//				return spark.sql("select supp_nation, cust_nation, year, sum(volume) as revenue "
-//						+ "from ( "
-//						+ "select n1.n_name as supp_nation, "
-//						+ "n2.n_name as cust_nation, "
-//						+ "extract(year from l_shipdate) as year "
-//						+ "l_extendedprice * (1 - l_discount) as volume "
-//						+ "from supplier, lineitem, orders, customer, nation n1, nation n2 "
-//						+ "where s_suppkey = l_suppkey "
-//						+ "and o_orderkey = l_orderkey "
-//						+ "and c_custkey = o_custkey "
-//						+ "and s_nationkey = n1.n_nationkey "
-//						+ "and c_nationkey = n2.n_nationkey "
-//						+ "and ( "
-//						+ "(n1.n_name = '" + nation1 + "' and n2.n_name = '" + nation2 + "') "
-//						+ "or (n1.n_name = '" + nation2 + "' and n2.n_name = '" + nation1 + "') ) "
-//						+ "and l_shipdate between '1995-01-01' and '1996-12-31' ) shipping"
-//						+ "group by supp_nation, cust_nation, year "
-//						+ "order by supp_nation, cust_nation, year").collectAsList();
 	}
 
+	/**
+	 * Get the substitution parameters random nation1 and nation2, where nation2 is not equal to nation1.
+	 * @return array of randomly selected nations
+	 */
 	private String[] getTwoRandomNations() {
 		String nation1 = Nation.getRandomNation();
 		String nation2 = Nation.getRandomNation();

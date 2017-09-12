@@ -6,19 +6,30 @@ import java.util.List;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
-
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils;
+/**
+ * Pricing Summary Report Query (Q1), TPC-H Benchmark Specification page 29 http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf). 
+ * @author Hekmatullah Sajid andSeema Narasimha Swamy
+ *
+ */
 public class Query1 extends Query{
 
 	public Query1(final SparkSession spark) {
 		super(spark);
 	}
 
+	/**
+	 * The parameter delta should be randomly selected within [60. 120].
+	 */
 	@Override
 	public List<Row> execute() {
 		return execute(Utils.getRandomInt(60, 120));
 	}
-
+	/**
+	 * Executes Query1 of TPC-H and returns the result.
+	 * @param delta, is substitution parameter that must be generated and used to build the executable query text.
+	 * @return the result of the query.
+	 */
 	public List<Row> execute(final int delta) {
 		String dateThreshold = LocalDate.parse("1998-12-01").minusDays(delta).toString();
 

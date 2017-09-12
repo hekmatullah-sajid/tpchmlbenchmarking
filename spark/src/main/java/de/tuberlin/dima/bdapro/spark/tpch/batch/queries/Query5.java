@@ -6,20 +6,34 @@ import java.util.List;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import de.tuberlin.dima.bdapro.spark.tpch.Utils;
-import de.tuberlin.dima.bdapro.spark.tpch.Utils.Nation;
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils;
+import de.tuberlin.dima.bdapro.spark.tpch.config.Utils.Nation;
 
+/**
+ * Local Supplier Volume Query (Q5), TPC-H Benchmark Specification page 36 http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf). 
+ * @author Hekmatullah Sajid
+ *
+ */
 public class Query5 extends Query {
 	
 	public Query5(final SparkSession spark) {
 		super(spark);
 	}
 
+	/**
+	 * Finds the random values and passes it to the execute method (with parameter).
+	 */
 	@Override
 	public List<Row> execute() {
 		return execute(Nation.getRandomRegion(), LocalDate.parse(Utils.getRandomInt(1993, 1997) + "-01-01"));
 	}
 	
+	/**
+	 * Executes Query5 of TPC-H and returns the result.
+	 * @param rndRegion is randomly selected within the list of Regions
+	 * @param rndDate is the first of January of a randomly selected year within [1993 .. 1997].
+	 * @return result of the query
+	 */
 	public List<Row> execute(String rndRegion, LocalDate rndDate) {
 		
 		String SQLQuery = "SELECT n_name, sum(l_extendedprice * (1 - l_discount)) as revenue "

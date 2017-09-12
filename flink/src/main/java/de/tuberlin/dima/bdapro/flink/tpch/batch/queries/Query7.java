@@ -9,39 +9,59 @@ import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
-import de.tuberlin.dima.bdapro.flink.tpch.Utils.Nation;
+import de.tuberlin.dima.bdapro.flink.tpch.batch.config.Utils;
+import de.tuberlin.dima.bdapro.flink.tpch.batch.config.Utils.Nation;
 
+/**
+ * Volume Shipping Query (Q7), TPC-H Benchmark Specification page 39
+ * http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf).
+ * 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ *
+ */
 public class Query7 extends Query {
 
 	public Query7(final BatchTableEnvironment env) {
 		super(env);
 	}
 
+	/**
+	 * Find the random values and pass it to the execute method (with
+	 * parameter).
+	 */
 	@Override
 	public List<Tuple4<String, String, Long, Double>> execute() {
 		String[] randNations = getTwoRandomNations();
 		return execute(randNations[0], randNations[1]);
 	}
 
+	/**
+	 * Execute Query7 of TPC-H and returns the result. The SQL of the query was
+	 * not supported by Flink, the query is excuted using the Table API from
+	 * Flink.
+	 * 
+	 * @param nation1
+	 *            is randomly selected within the list of values defined in enum
+	 *            Nation.
+	 * @param nation2
+	 *            is randomly selected within the list of values defined in enum
+	 *            Nation, and should be different from the nation1.
+	 * @return the result of the query
+	 */
 	public List<Tuple4<String, String, Long, Double>> execute(final String nation1, final String nation2) {
-		Table lineitem = env.scan("lineitem")
-				.filter("(l_shipdate).toDate >= '1995-01-01'.toDate")
+		Table lineitem = env.scan("lineitem").filter("(l_shipdate).toDate >= '1995-01-01'.toDate")
 				.filter("(l_shipdate).toDate <= '1996-12-31'.toDate");
 		Table supplier = env.scan("supplier");
 		Table orders = env.scan("orders");
 		Table customer = env.scan("customer");
-		Table nation1Table = env.scan("nation")
-				.as("n1_nationkey, n1_name, n1_regionkey, n1_comment")
+		Table nation1Table = env.scan("nation").as("n1_nationkey, n1_name, n1_regionkey, n1_comment")
 				.filter("n1_name = '" + nation1 + "'");
-		Table nation2Table = env.scan("nation")
-				.as("n2_nationkey, n2_name, n2_regionkey, n2_comment")
+		Table nation2Table = env.scan("nation").as("n2_nationkey, n2_name, n2_regionkey, n2_comment")
 				.filter("n2_name = '" + nation2 + "'");
 
 		Table innerRes = supplier.join(nation1Table).where("s_nationkey = n1_nationkey").join(lineitem)
-				.where("s_suppkey = l_suppkey").join(orders).where("o_orderkey = l_orderkey")
-				.join(customer).where("c_custkey = o_custkey").join(nation2Table)
-				.where("c_nationkey = n2_nationkey")
+				.where("s_suppkey = l_suppkey").join(orders).where("o_orderkey = l_orderkey").join(customer)
+				.where("c_custkey = o_custkey").join(nation2Table).where("c_nationkey = n2_nationkey")
 				.select("n1_name as supp_nation, n2_name as cust_nation, l_shipdate.toDate().extract(YEAR) as l_year, "
 						+ "(l_extendedprice*(1-l_discount)) as volume");
 
@@ -49,13 +69,18 @@ public class Query7 extends Query {
 				.select("supp_nation, cust_nation, l_year, sum(volume) as revenue")
 				.orderBy("supp_nation, cust_nation, l_year");
 
+		/*
+		 * Drop more than two decimal values in double values. And return the
+		 * result.
+		 */
 		try {
 			return env.toDataSet(res, TypeInformation.of(new TypeHint<Tuple4<String, String, Long, Double>>() {
 			})).map(new MapFunction<Tuple4<String, String, Long, Double>, Tuple4<String, String, Long, Double>>() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Tuple4<String, String, Long, Double> map(final Tuple4<String, String, Long, Double> value) throws Exception {
+				public Tuple4<String, String, Long, Double> map(final Tuple4<String, String, Long, Double> value)
+						throws Exception {
 					return Utils.keepOnlyTwoDecimals(value);
 				}
 			}).collect();
@@ -66,6 +91,12 @@ public class Query7 extends Query {
 		return null;
 	}
 
+	/**
+	 * Get the substitution parameters random nation1 and nation2, where nation2
+	 * is not equal to nation1.
+	 * 
+	 * @return array of randomly selected nations
+	 */
 	private String[] getTwoRandomNations() {
 		String nation1 = Nation.getRandomNation();
 		String nation2 = Nation.getRandomNation();

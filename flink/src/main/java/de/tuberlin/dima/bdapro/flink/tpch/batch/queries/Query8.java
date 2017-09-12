@@ -11,55 +11,77 @@ import org.apache.flink.table.api.Types;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.functions.ScalarFunction;
 
-import de.tuberlin.dima.bdapro.flink.tpch.Utils;
-import de.tuberlin.dima.bdapro.flink.tpch.Utils.Nation;
+import de.tuberlin.dima.bdapro.flink.tpch.batch.config.Utils;
+import de.tuberlin.dima.bdapro.flink.tpch.batch.config.Utils.Nation;
 
+/**
+ * National Market Share Query (Q8), TPC-H Benchmark Specification page 41
+ * http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.2.pdf).
+ * 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ *
+ */
 public class Query8 extends Query {
 
 	public Query8(final BatchTableEnvironment env) {
 		super(env);
 	}
 
+	/**
+	 * Find the random values and pass it to the execute method (with
+	 * parameter).
+	 */
 	@Override
 	public List<Tuple2<Long, Double>> execute() {
 		Nation nation = Nation.getRandomNationAndRegion();
 		return execute(nation.getName(), nation.getRegion(), Utils.getRandomType());
 	}
 
+	/**
+	 * Executes Query8 of TPC-H and returns the result. The CASE SQL control
+	 * structure was not supported by Flink (for more interpretation please
+	 * check the query 8 SQL on TPC-H Benchmark Specification document page 41).
+	 * For performing the unsupported SQL, UDF is defined to get the query
+	 * result using Flink Table API.
+	 * 
+	 * @param nation
+	 *            is randomly selected within the list of Nation
+	 * @param region
+	 *            is randomly selected within the list of Regions
+	 * @param randomType
+	 *            is randomly selected from the lists TYPE_SYL1, TYPE_SYL2 and
+	 *            TYPE_SYL3.
+	 * @return result of the query
+	 */
 	public List<Tuple2<Long, Double>> execute(final String nation, final String region, final String type) {
 		// register the function
 		env.registerFunction("volumeFilter", new VolumeFilter());
 
 		Table lineitem = env.scan("lineitem");
-		Table part = env.scan("part")
-				.filter("p_type = '" + type + "'");
+		Table part = env.scan("part").filter("p_type = '" + type + "'");
 		Table supplier = env.scan("supplier");
-		Table orders = env.scan("orders")
-				.filter("o_orderdate.toDate >= '1995-01-01'.toDate")
+		Table orders = env.scan("orders").filter("o_orderdate.toDate >= '1995-01-01'.toDate")
 				.filter("o_orderdate.toDate <= '1996-12-31'.toDate");
 		Table customer = env.scan("customer");
-		Table nation1Table = env.scan("nation")
-				.as("n1_nationkey, n1_name, n1_regionkey, n1_comment");
-		Table nation2Table = env.scan("nation")
-				.as("n2_nationkey, n2_name, n2_regionkey, n2_comment");
-		Table regionTable = env.scan("region")
-				.filter("r_name = '" + region + "'");
+		Table nation1Table = env.scan("nation").as("n1_nationkey, n1_name, n1_regionkey, n1_comment");
+		Table nation2Table = env.scan("nation").as("n2_nationkey, n2_name, n2_regionkey, n2_comment");
+		Table regionTable = env.scan("region").filter("r_name = '" + region + "'");
 
-		Table innerRes = part.join(lineitem).where("p_partkey = l_partkey")
-				.join(supplier).where("l_suppkey = s_suppkey")
-				.join(orders).where("l_orderkey = o_orderkey")
-				.join(customer).where("o_custkey = c_custkey")
-				.join(nation1Table).where("c_nationkey = n1_nationkey")
-				.join(regionTable).where("n1_regionkey = r_regionkey")
-				.join(nation2Table).where("s_nationkey = n2_nationkey")
-				.select("o_orderdate.toDate.extract(YEAR) as o_year, "
-						+ "(l_extendedprice*(1-l_discount)) as volume, "
+		Table innerRes = part.join(lineitem).where("p_partkey = l_partkey").join(supplier)
+				.where("l_suppkey = s_suppkey").join(orders).where("l_orderkey = o_orderkey").join(customer)
+				.where("o_custkey = c_custkey").join(nation1Table).where("c_nationkey = n1_nationkey").join(regionTable)
+				.where("n1_regionkey = r_regionkey").join(nation2Table).where("s_nationkey = n2_nationkey")
+				.select("o_orderdate.toDate.extract(YEAR) as o_year, " + "(l_extendedprice*(1-l_discount)) as volume, "
 						+ "n2_name as nation");
 
 		Table res = innerRes.groupBy("o_year")
 				.select("o_year, (sum(volumeFilter(volume,nation,'" + nation + "'))/sum(volume)) as mkt_share")
 				.orderBy("o_year");
 
+		/*
+		 * Drop more than two decimal values in double values. And return the
+		 * result.
+		 */
 		try {
 			return env.toDataSet(res, TypeInformation.of(new TypeHint<Tuple2<Long, Double>>() {
 			})).map(new MapFunction<Tuple2<Long, Double>, Tuple2<Long, Double>>() {
@@ -76,9 +98,14 @@ public class Query8 extends Query {
 		return null;
 	}
 
+	/**
+	 * Function defined to perform the SQL CASE control structure which is not
+	 * supported by Flink, Flink could not generate logical plan for the given
+	 * SQL.
+	 */
 	public static class VolumeFilter extends ScalarFunction {
 		public double eval(final Double volume, final String nation, final String nation2) {
-			if(nation.equals(nation2)) {
+			if (nation.equals(nation2)) {
 				return volume;
 			}
 			return 0;
