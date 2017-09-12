@@ -1,5 +1,6 @@
 package de.tuberlin.dima.bdapro.flinkml.recommendation
 
+import breeze.linalg.Axis._1
 import de.tuberlin.dima.bdapro.flinkml.Config
 import org.apache.flink.api.scala.{DataSet, _}
 import org.apache.flink.ml.common.{LabeledVector, ParameterMap}
@@ -12,6 +13,8 @@ import org.apache.flink.ml.preprocessing.Splitter
   */
 class ALSRating (val envPassed : ExecutionEnvironment) {
   val env = envPassed
+
+
 
   def execute(): Double = {
 
@@ -51,22 +54,19 @@ class ALSRating (val envPassed : ExecutionEnvironment) {
 
       // Calculate the ratings according to the matrix factorization
       val predictedRatings = als.predict(testingDS.map(x => (x._1, x._2)))
+      //val result = predictedRatings.map(x => x._3)
       //predictedRatings.print()
 
-//      val predictionsAndRatings: DataSet[(Double, Double)] =
-//        testingDS.join(predictedRatings).where(0, 1).equalTo(0, 1) { (l, r) => (l._3, r._3) }
-//      val count = predictionsAndRatings.count()
-//      val mse = predictionsAndRatings.collect().map{
-//        case (rating, prediction) =>
-//          val err = rating - prediction
-//          err * err }.sum
-//      print(count)
-//
-//    var acc =  math.sqrt(mse/count)
-//    return (acc)
+    var foo = 0.9
+    val predictionsAndRatings: DataSet[(Double, Double)] =
+        testingDS.join(predictedRatings).where(0, 1).equalTo(0, 1) { (l, r) => (l._3, r._3) }
 
-      return 10
+    val squaredError: DataSet[Double] = predictionsAndRatings.map((tuple: (Double, Double)) => ((tuple._1 - tuple._2) * (tuple._1 - tuple._2), 1))
+      .reduce((tuple: (Double, Int), tuple0: (Double, Int)) => (tuple._1 + tuple0._1, tuple._2 + tuple0._2))
+      .map(tuple => (math.sqrt(tuple._1 / tuple._2)))
+    val result = squaredError.collect()
 
+    return result.last
 
   }
 }

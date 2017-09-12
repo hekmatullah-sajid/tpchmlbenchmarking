@@ -28,15 +28,14 @@ object BenchmarkingJob {
       val file = new File("FlinkMLOutput-" + mode + ".txt")
       val bw = new FileWriter(file, true)
       bw.write("FlinkML Accuracy and Execution Time Results \n")
-//      if(algo == "all" | algo == "MLR"){
-//        start = System.currentTimeMillis()
-//        val regression = new MLRegression(env)
-//        val MLRAccuracy = regression.execute()
-//        end = System.currentTimeMillis()
-//        exeTime = (end - start)
-//        bw.write("MultipleLinearRegression, " + ", " + exeTime + ", " + MLRAccuracy + "\n")
-//      }
-      
+      if(algo == "all" | algo == "MLR"){
+        start = System.currentTimeMillis()
+        val regression = new MLRegression(env)
+        val MLRAccuracy = regression.execute()
+        end = System.currentTimeMillis()
+        exeTime = (end - start)
+        bw.write("MultipleLinearRegression, " + ", " + exeTime + ", " + MLRAccuracy + "\n")
+      }
       if(algo == "all" | algo == "KNN"){
           start = System.currentTimeMillis()
         val clusterling = new KNearestNeighbors(env)
@@ -46,23 +45,23 @@ object BenchmarkingJob {
         bw.write("KNearestNeighbors, " + ", " + exeTime + ", " + KNNAccuracy + "\n")
       }
       
-//      if(algo == "all" | algo == "SVM"){
-//        start = System.currentTimeMillis()
-//        val classification = new SVMClassification(env)
-//        val SVMAccuracy = classification.execute()
-//        end = System.currentTimeMillis()
-//        exeTime = (end - start)
-//        bw.write("SVMClassification, "  + exeTime + ", " + SVMAccuracy + "\n")
-//      }
-//      
-//      if(algo == "all" | algo == "ALS"){
-//        start = System.currentTimeMillis()
-//        val recommendation = new ALSRating(env)
-//        val ALSAccuracy = recommendation.execute()
-//        end = System.currentTimeMillis()
-//        exeTime = (end - start)
-//         bw.write("ALSRating, " + exeTime + ", " + ALSAccuracy + "\n")
-//      }
+      if(algo == "all" | algo == "SVM"){
+        start = System.currentTimeMillis()
+        val classification = new SVMClassification(env)
+        val SVMAccuracy = classification.execute()
+        end = System.currentTimeMillis()
+        exeTime = (end - start)
+        bw.write("SVMClassification, "  + exeTime + ", " + SVMAccuracy + "\n")
+      }
+
+      if(algo == "all" | algo == "ALS"){
+        start = System.currentTimeMillis()
+        val recommendation = new ALSRating(env)
+        val ALSAccuracy = recommendation.execute()
+        end = System.currentTimeMillis()
+        exeTime = (end - start)
+         bw.write("ALSRating, " + exeTime + ", " + ALSAccuracy + "\n")
+      }
       bw.close()
   
       
