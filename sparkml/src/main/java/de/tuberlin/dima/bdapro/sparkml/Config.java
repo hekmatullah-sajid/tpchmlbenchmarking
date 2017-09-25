@@ -1,6 +1,14 @@
 
 package de.tuberlin.dima.bdapro.sparkml;
 
+/**
+ * <p>
+ * The Config class is used to configure the path to directory where data
+ * sets are located and define functions to get the intended data set path for executing an algorithm.
+ * </p>
+ * 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ */
 public class Config {
 	private static String PARENT_DIR;
 

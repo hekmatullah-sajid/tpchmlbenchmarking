@@ -10,52 +10,66 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
+/**
+ * Class for testing the  Generalized Linear Regression ML algorithm.
+ * 
+ * @author Hekmatullah Sajid
+ *
+ */
 public class GeneralizedLinearRegression extends MLAlgorithmBase {
 
 	public GeneralizedLinearRegression(final SparkSession spark) {
 		super(spark);
 	}
 
+	/**
+     * 
+     * The execute method is used to test the algorithm.
+     * The input data set is in libsvm format which is split into two parts 80% for learning and the rest for testing.
+     * The method returns "Root Mean Squared Error (RMSE)" for the algorithm.
+     * 
+     */
 	public double execute() {
 		
-		//		  SparkSession spark = SparkSession
-		//			      .builder()
-		//			      .master("local[2]")
-		//			      .appName("JavaGeneralizedLinearRegression")
-		//			      .getOrCreate();
+		/*
+         * Load the data stored in LIBSVM format as a DataFrame.
+         */
 		String inputfile = Config.pathToRegressionTrainingSet();
 		Dataset<Row> data = spark.read().format("libsvm")
 		  .load(inputfile).cache();
 
+		/*
+		 * Train a LinearRegression model.
+		 */
 		LinearRegression lr = new LinearRegression()
 		  .setMaxIter(20)
 		  .setRegParam(0.3)
 		  .setElasticNetParam(0.8);
 
 		
-		// Split the data into training and test sets (80% training and 20% held for testing).
+		/*
+		 * Split the data into training and test sets (80% training and 20% held for testing).
+		 */
         Dataset<Row>[] splits = data.randomSplit(new double[]{0.8, 0.2});
         Dataset<Row> trainingData = splits[0];
         Dataset<Row> testData = splits[1];
         
-        // Fit the model.
+        /*
+         * Fit the model.
+         */
      	LinearRegressionModel lrModel = lr.fit(trainingData);
      	
-     	// Predict the testData
+     	/*
+     	 * Predict the testData
+     	 */
      	lrModel.transform(testData);
-		// Print the coefficients and intercept for linear regression.
-//		System.out.println("Coefficients: "
-//		  + lrModel.coefficients() + " Intercept: " + lrModel.intercept());
-//
-//		// Summarize the model over the training set and print out some metrics.
+     	
+     	/*
+     	 * Summarize the model over the training set and find RMSE.
+     	 */
 		LinearRegressionTrainingSummary trainingSummary = lrModel.summary();
 		trainingSummary.residuals();
-		System.out.println("RMSE: " + trainingSummary.rootMeanSquaredError());
 		return trainingSummary.rootMeanSquaredError();
-//     	return 1.0;
-		//				System.out.println("r2: " + trainingSummary.r2());
-		//
-		//			    spark.stop();
 
 	}
 

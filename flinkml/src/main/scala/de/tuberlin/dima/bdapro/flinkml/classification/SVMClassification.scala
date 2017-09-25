@@ -10,33 +10,50 @@ import org.apache.flink.ml.preprocessing.Splitter
 import org.apache.flink.api.scala.{DataSet, _}
 
 /**
-  * Created by seema on 13.08.17.
-  */
+ * Class for testing the SVM Classification ML algorithm
+ * 
+ * @author Seema Narasimha Swamy
+ *
+ */
 class SVMClassification(val envPassed : ExecutionEnvironment) {
   val env = envPassed
 
+ /**
+   * 
+   * The execute method is used to test the algorithm.
+   * The input data set is in libsvm format which is split into two parts 70% for learning and the rest for testing.
+   * The method returns "accuracy" for the algorithm.
+   * 
+   */
   def execute() : Double = {
-
-//    val params: ParameterTool = ParameterTool.fromArgs(args)
-//    val env = ExecutionEnvironment.getExecutionEnvironment
-//    env.getConfig.setGlobalJobParameters(params)
-
+    
+    /*
+     * Read the training data set, from a LibSVM formatted file
+     */
     val pathToDataset = Config.pathToClassificationTrainingSet
-    // Read the training data set, from a LibSVM formatted file
     val inputds: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
+    /*
+     *  Split the data into training and test sets (30% held out for testing)
+     */
     val trainTestData = Splitter.trainTestSplit(inputds, 0.7, true)
     val trainingData: DataSet[LabeledVector] = trainTestData.training
     val testingData: DataSet[LabeledVector] = trainTestData.testing
 
-    // Create the SVM learner
+    /*
+     * Create the SVM learner
+     */
     val svm = SVM()
       .setBlocks(20).setOutputDecisionFunction(false)
 
-    // Learn the SVM model
+    /*
+     * Learn the SVM model
+     */
     svm.fit(trainingData)
-    // Read the testing data set
-    //val testingDS: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
+    
+    /*
+     * Evaluate the algorithm and find the test error.
+     */
     val evaluationDS: DataSet[(Double, Double)] = svm.evaluate(testingData.map(x => (x.vector, x.label)))
 
     val squaredError: DataSet[Double] = evaluationDS.map((tuple: (Double, Double)) => (if (tuple._1 == tuple._2) 1.0 else 0.0, 1))

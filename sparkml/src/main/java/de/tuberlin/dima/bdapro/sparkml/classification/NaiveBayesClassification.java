@@ -13,48 +13,63 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
+/**
+ * Class for testing the Naive Bayes Classification ML algorithm
+ * 
+ * @author Seema Narasimha Swamy
+ *
+ */
 public class NaiveBayesClassification extends MLAlgorithmBase{
     public NaiveBayesClassification(final SparkSession spark)
     {
         super(spark);
     }
+    
+    /**
+     * 
+     * The execute method is used to test the algorithm.
+     * The input data set is in libsvm format which is split into two parts 60% for learning and the rest for testing.
+     * The method returns "accuracy" for the algorithm.
+     * 
+     */
     public double execute() {
-//        SparkSession spark = SparkSession
-//                .builder()
-//                .appName("JavaNaiveBayesExample")
-//                .config("spark.master", "local")
-//                .getOrCreate();
-
-        // $example on$
-        // Load training data
+    	
+        /*
+         *  Load training data
+         */
         String inputfile = Config.pathToNaiveBayesClassificationTrainingSet();
         Dataset<Row> dataFrame =
                 spark.read().format("libsvm").load(inputfile).cache();
-        // Split the data into train and test
+        /*
+         *  Split the data into train and test  (40% held out for testing)
+         */
         Dataset<Row>[] splits = dataFrame.randomSplit(new double[]{0.6, 0.4}, 1234L);
         Dataset<Row> train = splits[0];
         Dataset<Row> test = splits[1];
 
-        // create the trainer and set its parameters
+        /*
+         *  create the trainer and set its parameters
+         */
         NaiveBayes nb = new NaiveBayes();
 
-        // train the model
+        /*
+         *  train the model
+         */
         NaiveBayesModel model = nb.fit(train);
 
-        // Select example rows to display.
+        /*
+         * Make predictions.
+         */
         Dataset<Row> predictions = model.transform(test);
-        predictions.show();
 
-        // compute accuracy on the test set
+        /*
+         *  compute accuracy on the test set and return.
+         */
         MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
                 .setLabelCol("label")
                 .setPredictionCol("prediction")
                 .setMetricName("accuracy");
         double accuracy = evaluator.evaluate(predictions);
-        System.out.println("Test set accuracy = " + accuracy);
         return accuracy;
-        // $example off$
-
-        //spark.stop();
     }
 }

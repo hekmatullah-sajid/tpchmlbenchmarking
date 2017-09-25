@@ -1,8 +1,13 @@
 package de.tuberlin.dima.bdapro.flinkml
 
 /**
-  * Created by seema on 16.08.17.
-  */
+ * <p>
+ * The Config object is used to configure the path to directory where data
+ * sets are located and define functions to get the intended data set path for executing an algorithm.
+ * </p>
+ * 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ */
 object Config {
   
   var PARENT_DIR: String = ""
@@ -16,7 +21,5 @@ object Config {
   def pathToRecommendationTrainingSet:String = PARENT_DIR + "recommendation.data"
 
   def pathToRegressionTrainingSet:String = PARENT_DIR + "regression.data"
-
-  def pathToClusteringTrainingSet:String = PARENT_DIR + "classification.data"
 
 }

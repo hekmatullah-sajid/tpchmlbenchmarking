@@ -14,37 +14,62 @@ import de.tuberlin.dima.bdapro.flinkml.Config
 
 import org.apache.flink.ml.math.Vector
 
+/**
+ * Class for testing the  Multiple Linear Regression ML algorithm.
+ * 
+ * @author Hekmatullah Sajid
+ *
+ */
 class MLRegression(val envPassed: ExecutionEnvironment) {
+  
+  	/**
+     * 
+     * The execute method is used to test the algorithm.
+     * The input data set is in libsvm format which is split into two parts 80% for learning and the rest for testing.
+     * The method returns "Root Mean Squared Error (RMSE)" for the algorithm.
+     * 
+     */
   def execute(): Double = {
 
     val env = envPassed
 
-
-
+    /*
+     * Load the data stored in LIBSVM format as a DataFrame.
+     */
     val pathToDataset = Config.pathToRegressionTrainingSet
     val dataSet: DataSet[LabeledVector] = env.readLibSVM(pathToDataset)
 
+    /*
+		 * Split the data into training and test sets (80% training and 20% held for testing).
+		 */
     val trainTestData = Splitter.trainTestSplit(dataSet, 0.8, true)
     val trainingData: DataSet[LabeledVector] = trainTestData.training
     val testingData: DataSet[Vector] = trainTestData.testing.map(lv => lv.vector)
-
-    //    val dataMultiRandom: Array[DataSet[LabeledVector]] = Splitter.multiRandomSplit(dataSet, Array(0.8, 0.2))
-    //    val trainingData: DataSet[LabeledVector] = dataMultiRandom(0)
-    //    val testingData: DataSet[LabeledVector] = dataMultiRandom(1)
-
-    //  val testingData: DataSet[Vector] = dataMultiRandom(1).map(lv => lv.vector)
-
+    
+    
+    /*
+		 * Train a MultipleLinearRegression model.
+		 * The number of iterations is set to 20, this can be increased to get a lower test error.
+		 */
     val mlr = MultipleLinearRegression()
       .setStepsize(1.0)
-      .setIterations(100)
+      .setIterations(20)
       .setConvergenceThreshold(0.001)
 
+    /*
+     * Fit the model.
+     */
     mlr.fit(trainingData)
 
-    // The fitted model can now be used to make predictions
-    //  val predictions: DataSet[(Vector, Double)] = mlr.predict(testingData)
+    /*
+     * The fitted model can now be used to make predictions
+     */
+    val predictions: DataSet[(Vector, Double)] = mlr.predict(testingData)
 
 
+    /*
+     * Evaluate prediction and compute test error.
+     */
     val evaluationDS: DataSet[(Double, Double)] = mlr.evaluate(trainTestData.testing.map(x => (x.vector, x.label)))
 
     val rmse = evaluationDS.map((tuple: (Double, Double)) => ((tuple._1 - tuple._2) * (tuple._1 - tuple._2), 1))

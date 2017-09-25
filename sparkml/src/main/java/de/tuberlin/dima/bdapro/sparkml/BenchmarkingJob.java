@@ -15,16 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by seema on 15.08.17.
+ * Main class of the project for testing ML Algorithms on Apache Spark. 
+ * How to run the jar on Spark: ./bin/spark-submit --class de.tuberlin.dima.bdapro.sparkml.BenchmarkingJob -cluster-specification path-to-jar path-to-datasets algorithm mode
+ * 
+ * @author Hekmatullah Sajid and Seema Narasimha Swamy
+ *
  */
 public class BenchmarkingJob {
 
 	public static void main(final String[] args) {
-		//////////////////////// ARGUMENT PARSING
-		//////////////////////// ///////////////////////////////
-		if (args.length <= 0 || args.length > 4) {
-			throw new IllegalArgumentException(
-					"Please input the path to the directory where the test databases are located.");
+		
+		/**
+		 * ARGUMENT PARSING The main method expects minimum three arguments. 
+		 * First argument should be the path to directory where data sets are located.
+		 * Second argument should be the all or abbreviation of the algorithm to be executed.
+		 * Third argument should be the execution mode (Cluster/Local)
+		 */
+		if (args.length <= 0 || args.length > 3) {
+			throw new IllegalArgumentException("Please provide the required arguments: \n"
+			    + "1: Path to the directory where the data sets are located, "
+			    + "2: Algorithm to be executed, or all to execute all algorithms \n"
+			    + "3: Execution mode (Cluster/Local)");
 		}
 		String path = args[0];
 		try {
@@ -39,21 +50,26 @@ public class BenchmarkingJob {
 		}
 
 		// Benchmarking ML Algorithms runtime and error rate
-		SparkSession spark = SparkSession.builder().appName("ML Spark Batch Benchmarking").getOrCreate(); // config("spark.master",
-																											// "local")
+		SparkSession spark = SparkSession.builder().appName("ML Spark Batch Benchmarking").getOrCreate(); 																							
 		Config.SetBaseDir(path);
-
 		String algo = args[1];
 		String mode = args[2];
 
-		// Variables to store Benchmarking intermediate and final values
+		/*
+		 * The results list is used to store the execution time and accuracy of ML Algorithms.
+		 * The start and end variables are used to store the starting and ending time of executing an algorithm,
+		 * the difference of these two is written to the result with its corresponding algorithm name and accuracy.
+		 */
 		List<String> results = new ArrayList<String>();
 		long start = 0;
 		long end = 0;
 		double accuracy = 0;
-		// Start collecting the outpur
+		// Start collecting the output
 		results.add(" Algorithm, execution time, accuracy\r\n");
 
+		/*
+		 * Testing the algorithms for their execution time and accuracy.
+		 */
 		if (algo.equals("all") || algo.equals("DTC")) {
 			start = System.currentTimeMillis();
 			final DecisionTreeClassification dtClassification = new DecisionTreeClassification(spark);
@@ -134,7 +150,9 @@ public class BenchmarkingJob {
 			results.add(" RandomForestRegression," + (end - start) + "," + accuracy + "\r\n");
 		}
 
-		// write the output to a file
+		/**
+	     * Log File to write the execution time and accuracy of algorithms.
+	     */		
 		try {
 			FileWriter writer = new FileWriter("SparkMLOutput-" + mode + ".txt", true);
 			for (String str : results) {

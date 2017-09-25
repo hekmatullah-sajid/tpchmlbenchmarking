@@ -61,7 +61,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.tuberlin.dima.bdapro.spark.tpch.config.batch.BenchmarkingJob</mainClass>
+							<mainClass>de.tuberlin.dima.bdapro.spark.tpch.batch.BenchmarkingJob</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
